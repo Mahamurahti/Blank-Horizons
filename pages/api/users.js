@@ -18,7 +18,7 @@ export default async (req, res) => {
       break
     case 'GET':
       try {
-        const [getRows, _] = await conn.query('SELECT * FROM users')
+        const [getRows, _] = await conn.query('SELECT * FROM Users')
         res.statusCode = 200
         res.json(getRows)
       } catch (e) {

@@ -17,6 +17,7 @@ export default async (req, res) => {
       res.json({ username, password })
       break
     case 'GET':
+      console.log('Method is GET')
       try {
         const [getRows, _] = await conn.query('SELECT * FROM Users')
         res.statusCode = 200

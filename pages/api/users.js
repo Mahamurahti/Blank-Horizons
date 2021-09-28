@@ -11,7 +11,7 @@ export default async (req, res) => {
   switch (method) {
     case 'POST':
       const [rows, fields] = await conn.query(
-          `INSERT INTO Users (username, password, country) VALUES ('${username}', '${password}', '${country}')`
+          `INSERT INTO users (username, password, country) VALUES ('${username}', '${password}', '${country}')`
       )
       res.statusCode = 201
       res.json({ username, password })
@@ -19,7 +19,7 @@ export default async (req, res) => {
     case 'GET':
       console.log('Method is GET')
       try {
-        const [getRows, _] = await conn.query('SELECT * FROM Users')
+        const [getRows, _] = await conn.query('SELECT * FROM users')
         res.statusCode = 200
         res.json(getRows)
       } catch (e) {

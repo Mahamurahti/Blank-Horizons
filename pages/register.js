@@ -12,8 +12,28 @@ export default function Register() {
     const [terms, setTerms] = useState(false)
     const [country, setCountry] = useState("")
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
+
+        const res = await fetch('api/users', {
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                country: country
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+
+        if (res.status === 201) {
+            await res.json()
+            alert("201")
+        } else {
+            const error = await res.text()
+            alert("ERROR")
+        }
         console.log("%s %s %s %s %s %s", username, firstName, lastName, password, country, terms)
     }
 
@@ -50,7 +70,7 @@ export default function Register() {
                             name="firstName"
                             value={firstName}
                             onChange={e => setFirstName(e.target.value)}
-                            required />
+                             />
                     </div>
 
                     <div className={styles.section}>
@@ -61,7 +81,7 @@ export default function Register() {
                             name="lastName"
                             value={lastName}
                             onChange={e => setLastName(e.target.value)}
-                            required />
+                             />
                     </div>
 
                     <div className={styles.section}>
@@ -101,7 +121,7 @@ export default function Register() {
                             name="terms"
                             value={terms}
                             onChange={e => setTerms(!terms)}
-                            required />
+                             />
                     </div>
 
                     <div className={styles.section}>

@@ -11,7 +11,7 @@ export default async (req, res) => {
   switch (method) {
     case 'POST':
       const [rows, fields] = await conn.query(
-          `insert into users (username, password, country) values ('${username}', '${password}', '${country}')`
+          `INSERT INTO Users (username, password, country) VALUES ('${username}', '${password}', '${country}')`
       )
       res.statusCode = 201
       res.json({ username, password })

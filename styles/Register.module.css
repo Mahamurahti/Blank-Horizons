@@ -88,6 +88,10 @@
     height: 1.25rem;
 }
 
+.section .error {
+    border: solid 2px #FF4433;
+}
+
 .section button {
     margin: 1.25rem 0;
     font-family: 'Fira Sans', sans-serif;

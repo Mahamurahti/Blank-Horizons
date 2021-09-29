@@ -1,25 +1,62 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Register.module.css'
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Register() {
-    const [username, setUsername] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [password, setPassword] = useState("")
-    const [terms, setTerms] = useState(false)
-    const [country, setCountry] = useState("")
+
+    const [user, setUser] = useState({
+        username:   "",
+        password:   "",
+        firstName:  "",
+        lastName:   "",
+        country:    "",
+        terms:      false
+    })
+
+    const [state, setState] = useState({
+        userInfo: true,
+        countryInfo: false,
+        finishInfo: false
+    })
+
+    const handleChange = (e) => {
+        const { target } = e
+
+        console.log(user)
+
+        switch (target.name) {
+            case "username":
+                setUser((prev) => ({ ...prev, username: target.value }))
+                break
+            case "password":
+                setUser((prev) => ({ ...prev, password: target.value }))
+                break
+            case "firstName":
+                setUser((prev) => ({ ...prev, firstName: target.value }))
+                break
+            case "lastName":
+                setUser((prev) => ({ ...prev, lastName: target.value }))
+                break
+            case "country":
+                setUser((prev) => ({ ...prev, country: target.value }))
+                break
+            case "terms":
+                setUser((prev) => ({ ...prev, terms: !user.terms }))
+                break
+            default:
+                console.log("target.name not recognized")
+        }
+    }
 
     const handleSubmit = async e => {
         e.preventDefault()
 
         const res = await fetch('api/users', {
             body: JSON.stringify({
-                username: username,
-                password: password,
-                country: country
+                username: user.username,
+                password: user.password,
+                country: user.country
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +71,8 @@ export default function Register() {
             const error = await res.text()
             alert("ERROR")
         }
-        console.log("%s %s %s %s %s %s", username, firstName, lastName, password, country, terms)
+        console.log("%s %s %s %s %s %s",
+            user.username, user.firstName, user.lastName, user.password, user.country, user.terms)
     }
 
     return (
@@ -51,82 +89,13 @@ export default function Register() {
                 </h1>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    <div className={styles.section}>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            placeholder="Enter Username"
-                            name="username"
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
-                            required />
-                    </div>
 
-                    <div className={styles.section}>
-                        <label htmlFor="firstName">First Name</label>
-                        <input
-                            type="text"
-                            placeholder="Enter First Name"
-                            name="firstName"
-                            value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
-                             />
-                    </div>
+                    {state.userInfo  && <UserInfo user={user} handleChange={handleChange} setState={setState} />}
 
-                    <div className={styles.section}>
-                        <label htmlFor="lastName">Last Name</label>
-                        <input
-                            type="text"
-                            placeholder="Enter Last Name"
-                            name="lastName"
-                            value={lastName}
-                            onChange={e => setLastName(e.target.value)}
-                             />
-                    </div>
+                    {state.countryInfo && <CountryInfo user={user} handleChange={handleChange} setState={setState} />}
 
-                    <div className={styles.section}>
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter Password"
-                            name="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required />
-                    </div>
+                    {state.finishInfo && <FinishSetUp user={user} handleChange={handleChange} setState={setState} />}
 
-                    <div className={styles.section}>
-                        <label htmlFor="country">Country</label>
-                        <input
-                            type="text"
-                            placeholder="Enter Country"
-                            name="country"
-                            value={country}
-                            onChange={e => setCountry(e.target.value)}
-                            required />
-                    </div>
-
-                    <div className={styles.section + " " + styles.terms}>
-                        <label htmlFor="terms">
-                            Do you accept our {" "}
-                            <a
-                                href="https://www.youtube.com/watch?v=eBGIQ7ZuuiU"
-                                target="_blank"
-                            >
-                                terms and conditions
-                            </a>?
-                        </label>
-                        <input
-                            type="checkbox"
-                            name="terms"
-                            value={terms}
-                            onChange={e => setTerms(!terms)}
-                             />
-                    </div>
-
-                    <div className={styles.section}>
-                        <button type="submit">Login</button>
-                    </div>
                 </form>
             </main>
 
@@ -142,6 +111,223 @@ export default function Register() {
                     </span>
                 </a>
             </footer>
+        </div>
+    )
+}
+
+function UserInfo(props) {
+
+    const { user, handleChange, setState } = props
+    const [error, setError] = useState({
+        username:   false,
+        password:   false,
+        firstName:  false,
+        lastName:   false,
+        terms:      false
+    })
+
+    const handleNext = () => {
+        const stringReg = /^[a-zA-ZÄÖ0-9]{1,16}/
+        // Password: 1 lowercase, 1 uppercase, 1 number, 1 special, at least 8 characters
+        const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
+
+        let isValid = true
+
+        if(!stringReg.test(user.username)) {
+            isValid = false
+            setError((prev) => ({ ...prev, username: true }))
+        }
+        if(!stringReg.test(user.firstName)) {
+            isValid = false
+            setError((prev) => ({ ...prev, firstName: true }))
+        }
+        if(!stringReg.test(user.lastName)) {
+            isValid = false
+            setError((prev) => ({ ...prev, lastName: true }))
+        }
+        if(!passReg.test(user.password)) {
+            isValid = false
+            setError((prev) => ({ ...prev, password: true }))
+        }
+        if(!user.terms) {
+            isValid = false
+            setError((prev) => ({ ...prev, terms: true }))
+        }
+
+        console.log("isValid: " + isValid)
+        console.log(!stringReg.test(user.username))
+        console.log(!stringReg.test(user.firstName))
+        console.log(!stringReg.test(user.lastName))
+        console.log(!passReg.test(user.password))
+        console.log(!user.terms)
+
+        if(isValid) setState((prev) => ({ ...prev, userInfo: false, countryInfo: true }))
+
+        return isValid
+    }
+
+    const handleError = (e) => {
+        const { target } = e
+
+        switch (target.name) {
+            case "username":
+                setError((prev) => ({ ...prev, username: false }))
+                break
+            case "password":
+                setError((prev) => ({ ...prev, password: false }))
+                break
+            case "firstName":
+                setError((prev) => ({ ...prev, firstName: false }))
+                break
+            case "lastName":
+                setError((prev) => ({ ...prev, lastName: false }))
+                break
+            case "country":
+                setError((prev) => ({ ...prev, country: false }))
+                break
+            case "terms":
+                setError((prev) => ({ ...prev, terms: false }))
+                break
+            default:
+                console.log("target.name not recognized")
+        }
+    }
+
+    return (
+        <>
+            <div className={styles.section}>
+                <label htmlFor="username">Username</label>
+                <input
+                    className={error.username ? styles.error : null}
+                    type="text"
+                    placeholder="Enter Username"
+                    name="username"
+                    value={user.username}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    maxLength={16}
+                    required />
+            </div>
+
+            <div className={styles.section}>
+                <label htmlFor="firstName">First Name</label>
+                <input
+                    className={error.firstName ? styles.error : null}
+                    type="text"
+                    placeholder="Enter First Name"
+                    name="firstName"
+                    value={user.firstName}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    maxLength={16}
+                    required />
+            </div>
+
+            <div className={styles.section}>
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                    className={error.lastName ? styles.error : null}
+                    type="text"
+                    placeholder="Enter Last Name"
+                    name="lastName"
+                    value={user.lastName}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    maxLength={16}
+                    required />
+            </div>
+
+            <div className={styles.section}>
+                <label htmlFor="password">Password</label>
+                <input
+                    className={error.password ? styles.error : null}
+                    type="password"
+                    placeholder="Enter Password"
+                    name="password"
+                    value={user.password}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    minLength={8}
+                    required />
+            </div>
+
+            <div className={styles.section + " " + styles.terms}>
+                <label htmlFor="terms">
+                    Do you accept our {" "}
+                    <a
+                        href="https://www.youtube.com/watch?v=eBGIQ7ZuuiU"
+                        target="_blank"
+                    >
+                        terms and conditions
+                    </a>?
+                </label>
+                <input
+                    type="checkbox"
+                    name="terms"
+                    value={user.terms}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    required />
+                {error.terms && <p>Please read our terms and conditions.</p>}
+            </div>
+
+            <div className={styles.section}>
+                <button type="button" onClick={handleNext}>Next &rarr;</button>
+            </div>
+        </>
+    )
+}
+
+function CountryInfo(props) {
+
+    const { user, handleChange, setState } = props
+
+    useEffect(() => {
+        console.log("CountryInfo Rendered")
+
+        async function fetchData() {
+            console.log('Checking name info...')
+            try {
+                console.log(process.env.NAMEPARSER_API_KEY)
+                const url = `https://api.parser.name/?api_key=${process.env.NAMEPARSER_API_KEY}&endpoint=parse&name=`
+                const fullName = user.firstName + "%20" + user.lastName
+                console.log("Begin fetch")
+                const response = await fetch(url + fullName)
+                console.log("Begin response")
+                const data = await response
+                console.log(data)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchData()
+        // Fetch data only once, use deps: [] !!!
+    }, [])
+
+    return (
+        <>
+            <div className={styles.section}>
+                <label htmlFor="country">Country</label>
+                <input
+                    type="text"
+                    placeholder="Enter Country"
+                    name="country"
+                    value={user.country}
+                    onChange={e => handleChange(e)}
+                    required />
+            </div>
+
+            <div className={styles.section}>
+                <button type="button">Next &rarr;</button>
+            </div>
+        </>
+    )
+}
+
+function FinishSetUp(props) {
+    return (
+        <div className={styles.section}>
+            <button type="submit">Login</button>
         </div>
     )
 }

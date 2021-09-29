@@ -38,3 +38,5 @@ yarn-error.log*
 
 # environment variables
 .env
+.env.local
+next.config.js

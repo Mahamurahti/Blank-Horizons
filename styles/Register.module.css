@@ -121,3 +121,8 @@
     height: 1em;
     margin-left: 0.5rem;
 }
+
+.img {
+    width: 500px;
+    height: 500px;
+}

@@ -281,6 +281,10 @@ function UserInfo(props) {
 function CountryInfo(props) {
 
     const { user, handleChange, setState } = props
+    const [gif, setGif] = useState({
+        src: "",
+        alt: ""
+    })
 
     useEffect(() => {
         console.log("CountryInfo Rendered")
@@ -288,14 +292,19 @@ function CountryInfo(props) {
         async function fetchData() {
             console.log('Checking name info...')
             try {
-                console.log(process.env.NAMEPARSER_API_KEY)
-                const url = `https://api.parser.name/?api_key=${process.env.NAMEPARSER_API_KEY}&endpoint=parse&name=`
-                const fullName = user.firstName + "%20" + user.lastName
+                console.log(process.env.GIPHY_API_KEY)
+                const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
+                //const fullName = user.firstName + "%20" + user.lastName
                 console.log("Begin fetch")
-                const response = await fetch(url + fullName)
+                const response = await fetch(url)
                 console.log("Begin response")
-                const data = await response
-                console.log(data)
+                const data = await response.json()
+                console.log(data.data[0])
+                setGif({
+                    src: data.data[0].images.original.url,
+                    alt: data.data[0].title
+                })
+                console.log(gif)
             } catch (error) {
                 console.error(error)
             }
@@ -306,6 +315,8 @@ function CountryInfo(props) {
 
     return (
         <>
+            <img className={styles.img} src={gif.src} alt={gif.alt} />
+            
             <div className={styles.section}>
                 <label htmlFor="country">Country</label>
                 <input

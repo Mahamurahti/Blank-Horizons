@@ -356,8 +356,6 @@ function UserProfile(props) {
         }))
 
         setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
-
-        console.log(user)
     }
 
     useEffect(() => {
@@ -408,6 +406,8 @@ function UserProfile(props) {
 function FinishSetUp(props) {
     const { user } = props
     const profile = user.profile_pic
+
+    useEffect(() => console.log(user), [])
 
     return (
         <>

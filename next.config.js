@@ -1,5 +1,13 @@
 module.exports = {
     env: {
+        PLANETSCALE_TOKEN_NAME: process.env.PLANETSCALE_TOKEN_NAME,
+        PLANETSCALE_TOKEN: process.env.PLANETSCALE_TOKEN,
+        PLANETSCALE_ORG: process.env.PLANETSCALE_ORG,
+        PLANETSCALE_DB: process.env.PLANETSCALE_DB,
+        PLANETSCALE_DB_USERNAME: process.env.PLANETSCALE_DB_USERNAME,
+        PLANETSCALE_DB_PASSWORD: process.env.PLANETSCALE_DB_PASSWORD,
+        PLANETSCALE_DB_HOST: process.env.PLANETSCALE_DB_HOST,
+        PLANETSCALE_SSL_CERT_PATH: process.env.PLANETSCALE_SSL_CERT_PATH,
         GIPHY_API_KEY: process.env.GIPHY_API_KEY,
         SECRET: process.env.SECRET
     }

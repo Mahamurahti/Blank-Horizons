@@ -62,8 +62,8 @@ export default function Register() {
             body: JSON.stringify({
                 username:   user.username,
                 password:   user.password,
-                firstName:  user.firstName,
-                lastName:   user.lastName,
+                first_name:  user.firstName,
+                last_name:   user.lastName,
                 country:    user.country,
                 large_pic:  user.profile_pic.large,
                 medium_pic: user.profile_pic.medium,

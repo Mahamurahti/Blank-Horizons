@@ -11,13 +11,19 @@ export default function Register() {
         firstName:  "",
         lastName:   "",
         country:    "",
-        terms:      false
+        terms:      false,
+        profile_pic: {
+            large:  "",
+            medium: "",
+            small:  "",
+            alt:    ""
+        }
     })
 
     const [state, setState] = useState({
         userInfo: true,
-        countryInfo: false,
-        finishInfo: false
+        userProfile: false,
+        userFinish: false
     })
 
     const handleChange = (e) => {
@@ -54,9 +60,15 @@ export default function Register() {
 
         const res = await fetch('api/users', {
             body: JSON.stringify({
-                username: user.username,
-                password: user.password,
-                country: user.country
+                username:   user.username,
+                password:   user.password,
+                firstName:  user.firstName,
+                lastName:   user.lastName,
+                country:    user.country,
+                large_pic:  user.profile_pic.large,
+                medium_pic: user.profile_pic.medium,
+                small_pic:  user.profile_pic.small,
+                alt_pic:    user.profile_pic.alt
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -66,13 +78,11 @@ export default function Register() {
 
         if (res.status === 201) {
             await res.json()
-            alert("201")
+            alert("Registration SUCCESSFUL")
         } else {
             const error = await res.text()
-            alert("ERROR")
+            alert("Registration ERROR")
         }
-        console.log("%s %s %s %s %s %s",
-            user.username, user.firstName, user.lastName, user.password, user.country, user.terms)
     }
 
     return (
@@ -90,11 +100,17 @@ export default function Register() {
 
                 <form className={styles.form} onSubmit={handleSubmit}>
 
-                    {state.userInfo  && <UserInfo user={user} handleChange={handleChange} setState={setState} />}
+                    {state.userInfo  && (
+                        <UserInfo user={user} handleChange={handleChange} setState={setState} />
+                    )}
 
-                    {state.countryInfo && <CountryInfo user={user} handleChange={handleChange} setState={setState} />}
+                    {state.userProfile && (
+                        <UserProfile user={user} setUser={setUser} setState={setState} />
+                    )}
 
-                    {state.finishInfo && <FinishSetUp user={user} handleChange={handleChange} setState={setState} />}
+                    {state.userFinish && (
+                        <FinishSetUp user={user} />
+                    )}
 
                 </form>
             </main>
@@ -123,6 +139,7 @@ function UserInfo(props) {
         password:   false,
         firstName:  false,
         lastName:   false,
+        country:    false,
         terms:      false
     })
 
@@ -149,6 +166,10 @@ function UserInfo(props) {
             isValid = false
             setError((prev) => ({ ...prev, password: true }))
         }
+        if(!stringReg.test(user.country)) {
+            isValid = false
+            setError((prev) => ({ ...prev, country: true }))
+        }
         if(!user.terms) {
             isValid = false
             setError((prev) => ({ ...prev, terms: true }))
@@ -159,9 +180,10 @@ function UserInfo(props) {
         console.log(!stringReg.test(user.firstName))
         console.log(!stringReg.test(user.lastName))
         console.log(!passReg.test(user.password))
+        console.log(!stringReg.test(user.country))
         console.log(!user.terms)
 
-        if(isValid) setState((prev) => ({ ...prev, userInfo: false, countryInfo: true }))
+        if(isValid) setState((prev) => ({ ...prev, userInfo: false, userProfile: true }))
 
         return isValid
     }
@@ -251,6 +273,20 @@ function UserInfo(props) {
                     required />
             </div>
 
+            <div className={styles.section}>
+                <label htmlFor="country">Country Code</label>
+                <input
+                    className={error.country ? styles.error : null}
+                    type="text"
+                    placeholder="Enter Country"
+                    name="country"
+                    value={user.country}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    maxLength={16}
+                    required />
+            </div>
+
             <div className={styles.section + " " + styles.terms}>
                 <label htmlFor="terms">
                     Do you accept our {" "}
@@ -278,35 +314,74 @@ function UserInfo(props) {
     )
 }
 
-function CountryInfo(props) {
+function UserProfile(props) {
 
-    const { user, handleChange, setState } = props
+    const { user, setUser, setState } = props
+    const [gifs, setGifs] = useState([])
     const [gif, setGif] = useState({
-        src: "",
+        large: "",
+        medium: "",
+        small: "",
         alt: ""
     })
+    const [isLoading, setIsLoading] = useState(false)
+    const [index, setIndex] = useState(1)
+
+    const handleReroll = () => {
+        setIsLoading(true)
+        try {
+            if(index === gifs.length) setIndex(0)
+            setIndex((prev) => (prev + 1))
+            setGif({
+                large: gifs[index].images.original.url,
+                medium: gifs[index].images.fixed_width.url,
+                small: gifs[index].images.fixed_width_small.url,
+                alt: gifs[index].title
+            })
+        } catch (error) {
+            console.error(error)
+        } finally {
+            console.log(gif)
+            setIsLoading(false)
+        }
+    }
+
+    const handleNext = () => {
+        setUser((prev) => ({ ...prev, profile_pic: {
+                large: gif.large,
+                medium: gif.medium,
+                small: gif.small,
+                alt: gif.alt
+            }
+        }))
+
+        setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
+
+        console.log(user)
+    }
 
     useEffect(() => {
-        console.log("CountryInfo Rendered")
+        setIsLoading(true)
+        console.log("UserProfile Rendered")
 
         async function fetchData() {
-            console.log('Checking name info...')
+            console.log('Setting profile picture...')
             try {
-                console.log(process.env.GIPHY_API_KEY)
                 const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
-                //const fullName = user.firstName + "%20" + user.lastName
-                console.log("Begin fetch")
                 const response = await fetch(url)
                 console.log("Begin response")
                 const data = await response.json()
-                console.log(data.data[0])
+                setGifs(data.data)
                 setGif({
-                    src: data.data[0].images.original.url,
+                    large: data.data[0].images.original.url,
+                    medium: data.data[0].images.fixed_width.url,
+                    small: data.data[0].images.fixed_width_small.url,
                     alt: data.data[0].title
                 })
-                console.log(gif)
             } catch (error) {
                 console.error(error)
+            } finally {
+                setIsLoading(false)
             }
         }
         fetchData()
@@ -315,30 +390,59 @@ function CountryInfo(props) {
 
     return (
         <>
-            <img className={styles.img} src={gif.src} alt={gif.alt} />
-            
+            <h2>Your profile picture</h2>
+
+            <img className={styles.img} src={gif.large} alt={gif.alt} />
+
             <div className={styles.section}>
-                <label htmlFor="country">Country</label>
-                <input
-                    type="text"
-                    placeholder="Enter Country"
-                    name="country"
-                    value={user.country}
-                    onChange={e => handleChange(e)}
-                    required />
+                <button type="button" onClick={handleReroll}>{isLoading ? "LOADING" : "Reroll Picture"}</button>
             </div>
 
             <div className={styles.section}>
-                <button type="button">Next &rarr;</button>
+                <button type="button" onClick={handleNext}>Next &rarr;</button>
             </div>
         </>
     )
 }
 
 function FinishSetUp(props) {
+    const { user } = props
+    const profile = user.profile_pic
+
     return (
-        <div className={styles.section}>
-            <button type="submit">Login</button>
-        </div>
+        <>
+            <h2>Your info</h2>
+
+            <div className={styles.section}>
+                <p>Username:</p>
+                <p>{user.username}</p>
+            </div>
+
+            <img className={styles.img} src={profile.large} alt={profile.alt} />
+
+            <div className={styles.section}>
+                <p>First Name:</p>
+                <p>{user.firstName}</p>
+            </div>
+
+            <div className={styles.section}>
+                <p>Last Name:</p>
+                <p>{user.lastName}</p>
+            </div>
+
+            <div className={styles.section}>
+                <p>Password:</p>
+                <p>{user.password}</p>
+            </div>
+
+            <div className={styles.section}>
+                <p>Country:</p>
+                <p>{user.country}</p>
+            </div>
+
+            <div className={styles.section}>
+                <button type="submit">Register</button>
+            </div>
+        </>
     )
 }

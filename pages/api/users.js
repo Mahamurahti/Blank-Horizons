@@ -5,16 +5,20 @@ const conn = new PSDB('main')
 
 export default async (req, res) => {
   const {
-    body: { username, password, country },
+    body: { username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic },
     method
   } = req
   switch (method) {
       case 'POST':
           const [rows, fields] = await conn.query(
-              `INSERT INTO users (username, password, country) VALUES (?, ?, ?)`, [username, password, country]
+              `INSERT INTO users 
+                    (username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic)
+                    VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             [username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic]
           )
           res.statusCode = 201
-          res.json({ username, password })
+          res.json({ username, password, alt_pic })
           break
       case 'GET':
           try {

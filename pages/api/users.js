@@ -46,10 +46,8 @@ export default async (req, res) => {
                     res.statusCode = 201
                     res.json({ username, password, alt_pic })
                 } else {
-                    const error = new Error('Username already taken')
-                    error.status = 400
-                    error.info = { message: 'Username already taken' }
-                    throw error
+                    res.statusCode = 400
+                    res.send("Username already taken")
                 }
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')

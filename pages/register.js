@@ -77,11 +77,11 @@ export default function Register() {
         })
 
         if (res.status === 201) {
-            await res.json()
-            alert("Registration SUCCESSFUL")
+            const result = await res.json()
+            alert("Registration SUCCESSFUL: " + result)
         } else {
             const error = await res.text()
-            alert("Registration ERROR")
+            alert("Registration ERROR: " + error)
         }
     }
 

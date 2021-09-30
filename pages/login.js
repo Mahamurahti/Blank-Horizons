@@ -25,6 +25,7 @@ export default function Login() {
 
         if (res.status === 201) {
             const result = await res.json()
+            console.log(result.user)
             alert("Login SUCCESSFUL: " + result.accessToken)
         } else {
             const error = await res.text()

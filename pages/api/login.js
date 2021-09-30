@@ -14,18 +14,17 @@ export default async (req, res) => {
     switch (method) {
         case 'POST':
             try {
-                sql = `SELECT username, password, alt_pic FROM users WHERE username LIKE ?`
+                sql = `SELECT username, password, large_pic, medium_pic, small_pic, alt_pic FROM users WHERE username LIKE ?`
                 let result = await conn.query(sql, [username])
-                console.log("BEFORE: ")
-                console.log(result)
                 result = JSON.parse(JSON.stringify(result[0][0]))
-                console.log("AFTER: ")
-                console.log(result)
                 bcrypt.compare(password, result.password, function (err, match) {
                     if (match) {
                         const user = {
-                            username: username,
-                            password: result.password
+                            username: result.username,
+                            large_pic: result.large_pic,
+                            medium_pic: result.medium_pic,
+                            small_pic: result.small_pic,
+                            alt_pic: result.alt_pic
                         }
 
                         // Access Token
@@ -35,17 +34,10 @@ export default async (req, res) => {
                             { expiresIn:"120s" }
                         )
 
-                        const send = {
-                            accessToken: accessToken,
-                            username: result.username,
-                            password: result.password,
-                            alt_pic: result.alt_pic
-                        }
-
                         console.log(accessToken)
 
                         res.statusCode = 201
-                        res.json({ accessToken })
+                        res.json({ accessToken, user })
                     } else {
                         res.statusCode = 400
                         res.send("Invalid credentials")

@@ -16,31 +16,13 @@ export default async (req, res) => {
             try {
                 sql = `SELECT username FROM users WHERE username LIKE ?`
                 const [getRows, _] = await conn.query(sql, [username])
+
+                // If username is not taken
                 if(getRows.length === 0) {
-                    sql = `INSERT INTO users (
-                         username,
-                         password,
-                         first_name,
-                         last_name,
-                         country,
-                         large_pic,
-                         medium_pic,
-                         small_pic,
-                         alt_pic
-                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+                    sql = `INSERT INTO users ( username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
                     bcrypt.genSalt(saltRounds, function(err, salt) {
                         bcrypt.hash(password, salt, async function (err, hash) {
-                            const [rows, fields] = await conn.query(sql, [
-                                username,
-                                hash,
-                                first_name,
-                                last_name,
-                                country,
-                                large_pic,
-                                medium_pic,
-                                small_pic,
-                                alt_pic]
-                            )
+                            const [rows, fields] = await conn.query(sql, [username, hash, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic])
                         })
                     })
                     res.statusCode = 201

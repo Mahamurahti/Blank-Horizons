@@ -15,8 +15,8 @@ export default async (req, res) => {
         case 'POST':
             try {
                 sql = `SELECT username FROM users WHERE username LIKE ?`
-                const result = await conn.query(sql, [username])
-                if(result.length === 0) {
+                const [getRows, _] = await conn.query(sql, [username])
+                if(getRows.length === 0) {
                     sql = `INSERT INTO users (
                          username,
                          password,

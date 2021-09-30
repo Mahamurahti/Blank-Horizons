@@ -78,7 +78,7 @@ export default function Register() {
 
         if (res.status === 201) {
             const result = await res.json()
-            alert("Registration SUCCESSFUL: " + result)
+            alert("Registration SUCCESSFUL: " + result.alt_pic)
         } else {
             const error = await res.text()
             alert("Registration ERROR: " + error)

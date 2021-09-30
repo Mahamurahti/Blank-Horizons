@@ -9,9 +9,27 @@ export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        console.log(username + " " + password)
+
+        const res = await fetch('api/login', {
+            body: JSON.stringify({
+                username:   username,
+                password:   password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+
+        if (res.status === 201) {
+            const result = await res.json()
+            alert("Login SUCCESSFUL: " + result.alt_pic)
+        } else {
+            const error = await res.text()
+            alert("Login ERROR: " + error)
+        }
     }
 
     const printUser = () => console.log(username + " " + password)

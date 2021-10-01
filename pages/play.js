@@ -2,8 +2,43 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Play.module.css'
 import Router from "next/router";
+import { useState, useEffect } from 'react'
+
+const words = ["wizard", "harry", "potter", "philosopher", "wand"]
+let selectedWord = words[Math.floor(Math.random() * words.length)]
 
 export default function Play() {
+
+    const [playable, setPlayable] = useState(true)
+    const [correctLetters, setCorrectLetters] = useState([])
+    const [wrongLetters, setWrongLetters] = useState([])
+
+    useEffect(() => {
+        const handleKeydown = (e) => {
+            const { key, keyCode } = e
+            if (playable && keyCode >= 65 && keyCode <= 90) {
+                const letter = key.toLowerCase()
+
+                if(selectedWord.includes(letter)) {
+                    if(!correctLetters.includes(letter)) {
+                        setCorrectLetters((prev) => [ ...prev, letter])
+                    } else {
+                        // notfi
+                    }
+                } else {
+                    if(!wrongLetters.includes(letter)) {
+                        setWrongLetters((prev) => [ ...prev, letter])
+                    } else {
+                        // notfi
+                    }
+                }
+            }
+        }
+        window.addEventListener('keydown', handleKeydown)
+
+        return () => window.removeEventListener('keydown', handleKeydown)
+    }, [correctLetters, wrongLetters, playable])
+
     return (
         <div className={styles.container}>
             <Head>
@@ -19,7 +54,9 @@ export default function Play() {
                 </h1>
 
                <div className={styles.gameContainer}>
-                   This is the game container...
+                   <Figure />
+                   <WrongLetters wrongLetters={wrongLetters} />
+                   <Word selectedWord={selectedWord} correctLetters={correctLetters} />
                </div>
             </main>
 
@@ -36,5 +73,79 @@ export default function Play() {
                 </a>
             </footer>
         </div>
+    )
+}
+
+function Figure() {
+    return (
+        <>
+            <h1 className={styles.figureContainer}>
+                <div className={styles.figurePart}>W</div>
+                <div className={styles.figurePart}>R</div>
+                <div className={styles.figurePart}>O</div>
+                <div className={styles.figurePart}>N</div>
+                <div className={styles.figurePart}>G</div>
+                <div className={styles.figurePart}>!</div>
+            </h1>
+        </>
+    )
+}
+
+function WrongLetters(props) {
+
+    const { wrongLetters } = props
+
+    return (
+        <>
+            <div className={styles.wrongContainer}>
+                <div>
+                    {wrongLetters.length > 0 && <p>Wrong</p>}
+                    {wrongLetters
+                        .map((letter, index) => <span key={index}>{letter}</span>)
+                        .reduce((prev, curr) => prev === null ? [curr] : [prev, ', ', curr], null)}
+                </div>
+            </div>
+        </>
+    )
+}
+
+function Word(props) {
+
+    const { selectedWord, correctLetters } = props
+
+    return (
+        <>
+            <div className={styles.word}>
+                {selectedWord.split("").map((letter, index) => (
+                    <span className={styles.letter} key={index}>
+                        {correctLetters.includes(letter) ? letter : ""}
+                    </span>
+                ))}
+            </div>
+        </>
+    )
+}
+
+function Results() {
+    return (
+        <>
+            <div className={styles.resultsContainer}>
+                <div className={styles.results}>
+                    <h2 className={styles.resultMessage}></h2>
+                    <h3 className={styles.revealWord}></h3>
+                    <button className={styles.playButton}></button>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function Notification() {
+    return (
+        <>
+            <div className={styles.notificationContainer}>
+                <p className={styles.notification}>You have already guessed this letter</p>
+            </div>
+        </>
     )
 }

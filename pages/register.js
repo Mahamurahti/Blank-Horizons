@@ -402,7 +402,7 @@ function UserProfile(props) {
         async function fetchData() {
             console.log('Setting profile picture...')
             try {
-                const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=memes&limit=25&offset=0&rating=r&lang=en`
+                const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
                 const response = await fetch(url)
                 console.log("Begin response")
                 const data = await response.json()

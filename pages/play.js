@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Play.module.css'
+import Router from "next/router";
 
 export default function Play() {
     return (
@@ -10,6 +11,7 @@ export default function Play() {
                 <meta name="description" content="Play Hangman!" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <button className={styles.home} onClick={() => Router.push('/')}>&larr;</button>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>

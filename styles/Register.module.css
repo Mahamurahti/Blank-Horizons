@@ -1,3 +1,14 @@
+.home {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    background: none;
+    border: 1px solid #F2F2F2;
+    color: #F2F2F2;
+    height: 2rem;
+    width: 2rem;
+    font-size: 1rem;
+}
 .container {
     min-height: 100vh;
     padding: 0 0.5rem;
@@ -92,9 +103,21 @@
     border: solid 2px #FF4433;
 }
 
+.section .taken {
+    color: #FF4433;
+}
+
+.section .taken span {
+    color: #F2F2F2;
+}
+
 .section button {
     margin: 1.25rem 0;
     font-family: 'Fira Sans', sans-serif;
+}
+
+.section .back {
+    border: none;
 }
 
 .section button:hover {
@@ -125,4 +148,24 @@
 .img {
     width: 500px;
     height: 500px;
+}
+
+.summary {
+    display: flex;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 2rem;
+    height: 500px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    width: 300px;
+    border-bottom: 1px solid #F2F2F2;
 }

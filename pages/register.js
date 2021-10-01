@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Register.module.css'
 import { useState, useEffect } from 'react'
+import Router from 'next/router'
 
 export default function Register() {
 
@@ -78,7 +79,8 @@ export default function Register() {
 
         if (res.status === 201) {
             const result = await res.json()
-            alert("Registration SUCCESSFUL: " + result.alt_pic)
+            console.log("Registration successful: " + result.alt_pic)
+            await Router.push("/login")
         } else {
             const error = await res.text()
             alert("Registration ERROR: " + error)
@@ -92,8 +94,10 @@ export default function Register() {
                 <meta name="description" content="Register an account" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <button className={styles.home} onClick={() => Router.push('/')}>&larr;</button>
 
             <main className={styles.main}>
+
                 <h1 className={styles.title}>
                     Register
                 </h1>
@@ -109,7 +113,7 @@ export default function Register() {
                     )}
 
                     {state.userFinish && (
-                        <FinishSetUp user={user} />
+                        <FinishSetUp user={user} setState={setState} />
                     )}
 
                 </form>
@@ -134,6 +138,8 @@ export default function Register() {
 function UserInfo(props) {
 
     const { user, handleChange, setState } = props
+    const [isUsernameTaken, setIsUsernameTaken] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState({
         username:   false,
         password:   false,
@@ -143,12 +149,35 @@ function UserInfo(props) {
         terms:      false
     })
 
-    const handleNext = () => {
+    const handleNext = async () => {
+        setIsLoading(true)
+        let isValid = true
+
+        try {
+            const res = await fetch('api/username', {
+                body: JSON.stringify({
+                    username:   user.username,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST'
+            })
+
+            if (res.status === 201) {
+                console.log("Username not taken")
+            } else {
+                setIsUsernameTaken(true)
+                console.log("Username taken")
+                isValid = false
+            }
+        } catch (e) {
+            console.error(e)
+        }
+
         const stringReg = /^[a-zA-ZÄÖ0-9]{1,16}/
         // Password: 1 lowercase, 1 uppercase, 1 number, 1 special, at least 8 characters
         const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
-
-        let isValid = true
 
         if(!stringReg.test(user.username)) {
             isValid = false
@@ -183,9 +212,9 @@ function UserInfo(props) {
         console.log(!stringReg.test(user.country))
         console.log(!user.terms)
 
-        if(isValid) setState((prev) => ({ ...prev, userInfo: false, userProfile: true }))
+        setIsLoading(false)
 
-        return isValid
+        if(isValid) setState((prev) => ({ ...prev, userInfo: false, userProfile: true }))
     }
 
     const handleError = (e) => {
@@ -193,6 +222,7 @@ function UserInfo(props) {
 
         switch (target.name) {
             case "username":
+                setIsUsernameTaken(false)
                 setError((prev) => ({ ...prev, username: false }))
                 break
             case "password":
@@ -229,6 +259,9 @@ function UserInfo(props) {
                     onInput={e => handleError(e)}
                     maxLength={16}
                     required />
+                {isUsernameTaken &&
+                    <p className={styles.taken}>Username taken. <br/><span>Please use a different one.</span></p>
+                    }
             </div>
 
             <div className={styles.section}>
@@ -308,7 +341,7 @@ function UserInfo(props) {
             </div>
 
             <div className={styles.section}>
-                <button type="button" onClick={handleNext}>Next &rarr;</button>
+                <button type="button" onClick={handleNext}>{isLoading ? "LOADING" : <span>Next &rarr;</span>}</button>
             </div>
         </>
     )
@@ -358,6 +391,10 @@ function UserProfile(props) {
         setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
     }
 
+    const handleBack = () => {
+        setState((prev) => ({ ...prev, userInfo: true, userProfile: false }))
+    }
+
     useEffect(() => {
         setIsLoading(true)
         console.log("UserProfile Rendered")
@@ -399,49 +436,68 @@ function UserProfile(props) {
             <div className={styles.section}>
                 <button type="button" onClick={handleNext}>Next &rarr;</button>
             </div>
+
+            <div className={styles.section}>
+                <button type="button" className={styles.back} onClick={handleBack}>&larr; Back</button>
+            </div>
         </>
     )
 }
 
 function FinishSetUp(props) {
-    const { user } = props
+    const { user, setState } = props
     const profile = user.profile_pic
+    const password = user.password.split("").map(() => "*")
+
+    const [buttonText, setButtonText] = useState("Register")
 
     useEffect(() => console.log(user), [])
+
+    const handleBack = () => {
+        setState((prev) => ({ ...prev, userProfile: true, userFinish: false }))
+    }
 
     return (
         <>
             <h2>Your info</h2>
 
+            <div className={styles.summary}>
+                <img className={styles.img} src={profile.large} alt={profile.alt} />
+
+                <div className={styles.info}>
+                    <div className={styles.section}>
+                        <p className={styles.bold}>Username:</p>
+                        <p className={styles.underline}>{user.username}</p>
+                    </div>
+
+                    <div className={styles.section}>
+                        <p className={styles.bold}>First Name:</p>
+                        <p className={styles.underline}>{user.firstName}</p>
+                    </div>
+
+                    <div className={styles.section}>
+                        <p className={styles.bold}>Last Name:</p>
+                        <p className={styles.underline}>{user.lastName}</p>
+                    </div>
+
+                    <div className={styles.section}>
+                        <p className={styles.bold}>Password:</p>
+                        <p className={styles.underline}>{password}</p>
+                    </div>
+
+                    <div className={styles.section}>
+                        <p className={styles.bold}>Country:</p>
+                        <p className={styles.underline}>{user.country}</p>
+                    </div>
+
+                </div>
+            </div>
             <div className={styles.section}>
-                <p>Username:</p>
-                <p>{user.username}</p>
+                <button type="submit" onClick={() => {setButtonText("PROCESSING")}}>{buttonText}</button>
             </div>
 
-            <img className={styles.img} src={profile.large} alt={profile.alt} />
-
             <div className={styles.section}>
-                <p>First Name:</p>
-                <p>{user.firstName}</p>
-            </div>
-
-            <div className={styles.section}>
-                <p>Last Name:</p>
-                <p>{user.lastName}</p>
-            </div>
-
-            <div className={styles.section}>
-                <p>Password:</p>
-                <p>{user.password}</p>
-            </div>
-
-            <div className={styles.section}>
-                <p>Country:</p>
-                <p>{user.country}</p>
-            </div>
-
-            <div className={styles.section}>
-                <button type="submit">Register</button>
+                <button type="button" className={styles.back} onClick={handleBack}>&larr; Back</button>
             </div>
         </>
     )

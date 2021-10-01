@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Leaderboard.module.css'
+import Router from "next/router";
 
 export default function Leaderboard() {
     return (
@@ -10,6 +11,7 @@ export default function Leaderboard() {
                 <meta name="description" content="Leaderboard of Hangman" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <button className={styles.home} onClick={() => Router.push('/')}>&larr;</button>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>

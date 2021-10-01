@@ -4,6 +4,7 @@ import Link from 'next/link'
 import styles from '../styles/Login.module.css'
 
 import { useState } from 'react'
+import Router from "next/router";
 
 export default function Login() {
     const [username, setUsername] = useState("")
@@ -42,6 +43,7 @@ export default function Login() {
                 <meta name="description" content="Leaderboard of Hangman" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <button className={styles.home} onClick={() => Router.push('/')}>&larr;</button>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>

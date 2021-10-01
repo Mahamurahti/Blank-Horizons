@@ -9,9 +9,12 @@ import Router from "next/router";
 export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async e => {
         e.preventDefault()
+
+        setIsLoading(true)
 
         const res = await fetch('api/login', {
             body: JSON.stringify({
@@ -26,12 +29,14 @@ export default function Login() {
 
         if (res.status === 201) {
             const result = await res.json()
-            console.log(result.user)
-            alert("Login SUCCESSFUL: " + result.accessToken)
+            localStorage.setItem("token", result.accessToken)
+            localStorage.setItem("user", JSON.stringify(result.user))
+            await Router.push('/')
         } else {
             const error = await res.text()
             alert("Login ERROR: " + error)
         }
+        setIsLoading(false)
     }
 
     const printUser = () => console.log(username + " " + password)
@@ -74,7 +79,7 @@ export default function Login() {
                     </div>
 
                     <div className={styles.section}>
-                        <button type="submit">Login</button>
+                        <button type="submit">{isLoading ? "LOADING" : "Login"}</button>
                     </div>
                 </form>
 

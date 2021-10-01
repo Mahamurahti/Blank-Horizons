@@ -349,7 +349,7 @@ function UserInfo(props) {
 
 function UserProfile(props) {
 
-    const { user, setUser, setState } = props
+    const { setUser, setState } = props
     const [gifs, setGifs] = useState([])
     const [gif, setGif] = useState({
         large: "",
@@ -358,13 +358,13 @@ function UserProfile(props) {
         alt: ""
     })
     const [isLoading, setIsLoading] = useState(false)
-    const [index, setIndex] = useState(1)
+    const [index, setIndex] = useState(0)
 
     const handleReroll = () => {
         setIsLoading(true)
         try {
             if(index === gifs.length) setIndex(0)
-            setIndex((prev) => (prev + 1))
+            else setIndex((prev) => (prev + 1))
             setGif({
                 large: gifs[index].images.original.url,
                 medium: gifs[index].images.fixed_width.url,
@@ -402,7 +402,7 @@ function UserProfile(props) {
         async function fetchData() {
             console.log('Setting profile picture...')
             try {
-                const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
+                const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=memes&limit=25&offset=0&rating=r&lang=en`
                 const response = await fetch(url)
                 console.log("Begin response")
                 const data = await response.json()
@@ -425,7 +425,7 @@ function UserProfile(props) {
 
     return (
         <>
-            <h2>Your profile picture</h2>
+            <h2>Choose a profile picture</h2>
 
             <img className={styles.img} src={gif.large} alt={gif.alt} />
 

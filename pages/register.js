@@ -301,7 +301,7 @@ function UserInfo(props) {
             </div>
 
             <div className={styles.section}>
-                <label htmlFor="country">Country Code</label>
+                <label htmlFor="country">Country</label>
                 <input
                     className={error.country ? styles.error : null}
                     type="text"

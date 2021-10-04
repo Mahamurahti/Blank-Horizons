@@ -21,7 +21,7 @@ export default async (req, res) => {
 
                 sql = `SELECT score FROM scores WHERE user_id LIKE ?`
                 const [getRows2, _2] = await conn.query(sql, [id])
-                const prevScore = getRows2[0].score
+                const prevScore = getRows2[0]?.score
 
                 let newScore = score
                 if(prevScore) {

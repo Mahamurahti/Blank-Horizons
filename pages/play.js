@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Play.module.css'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
+import { showNotification as show } from "../helpers/helpers";
 
 const words = ["wizard", "harry", "potter", "philosopher", "wand"]
 let selectedWord = words[Math.floor(Math.random() * words.length)]
@@ -12,6 +13,7 @@ export default function Play() {
     const [playable, setPlayable] = useState(true)
     const [correctLetters, setCorrectLetters] = useState([])
     const [wrongLetters, setWrongLetters] = useState([])
+    const [showNotification, setShowNotification] = useState(false)
 
     useEffect(() => {
         const handleKeydown = (e) => {
@@ -23,13 +25,13 @@ export default function Play() {
                     if(!correctLetters.includes(letter)) {
                         setCorrectLetters((prev) => [ ...prev, letter])
                     } else {
-                        // notfi
+                        show(setShowNotification)
                     }
                 } else {
                     if(!wrongLetters.includes(letter)) {
                         setWrongLetters((prev) => [ ...prev, letter])
                     } else {
-                        // notfi
+                        show(setShowNotification)
                     }
                 }
             }
@@ -54,9 +56,11 @@ export default function Play() {
                 </h1>
 
                <div className={styles.gameContainer}>
-                   <Figure />
+                   <Figure wrongLetters={wrongLetters} />
                    <WrongLetters wrongLetters={wrongLetters} />
                    <Word selectedWord={selectedWord} correctLetters={correctLetters} />
+                   <Notification showNotification={showNotification} />
+                   {/*<Results />*/}
                </div>
             </main>
 
@@ -76,16 +80,21 @@ export default function Play() {
     )
 }
 
-function Figure() {
+function Figure(props) {
+
+    const { wrongLetters } = props
+
+    const errors = wrongLetters.length
+    
     return (
         <>
             <h1 className={styles.figureContainer}>
-                <div className={styles.figurePart}>W</div>
-                <div className={styles.figurePart}>R</div>
-                <div className={styles.figurePart}>O</div>
-                <div className={styles.figurePart}>N</div>
-                <div className={styles.figurePart}>G</div>
-                <div className={styles.figurePart}>!</div>
+                {errors > 0 && <div className={styles.figurePart}>W</div>}
+                {errors > 1 && <div className={styles.figurePart}>R</div>}
+                {errors > 2 && <div className={styles.figurePart}>O</div>}
+                {errors > 3 && <div className={styles.figurePart}>N</div>}
+                {errors > 4 && <div className={styles.figurePart}>G</div>}
+                {errors > 5 && <div className={styles.figurePart}>!</div>}
             </h1>
         </>
     )
@@ -140,8 +149,11 @@ function Results() {
     )
 }
 
-function Notification() {
-    return (
+function Notification(props) {
+
+    const { showNotification } = props
+
+    return showNotification && (
         <>
             <div className={styles.notificationContainer}>
                 <p className={styles.notification}>You have already guessed this letter</p>

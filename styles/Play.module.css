@@ -133,7 +133,17 @@
 }
 
 .notificationContainer {
-
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px 10px 0 0;
+    padding: 15px 20px;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    margin-left: 100px;
+    margin-right: 100px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
 }
 
 .notification {

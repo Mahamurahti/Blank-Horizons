@@ -13,12 +13,8 @@ export default function Register() {
         lastName:   "",
         country:    "",
         terms:      false,
-        profile_pic: {
-            large:  "",
-            medium: "",
-            small:  "",
-            alt:    ""
-        }
+        picture:    "",
+        picture_alt:""
     })
 
     const [state, setState] = useState({
@@ -61,15 +57,13 @@ export default function Register() {
 
         const res = await fetch('api/users', {
             body: JSON.stringify({
-                username:   user.username,
-                password:   user.password,
-                first_name:  user.firstName,
-                last_name:   user.lastName,
-                country:    user.country,
-                large_pic:  user.profile_pic.large,
-                medium_pic: user.profile_pic.medium,
-                small_pic:  user.profile_pic.small,
-                alt_pic:    user.profile_pic.alt
+                username:       user.username,
+                password:       user.password,
+                first_name:     user.firstName,
+                last_name:      user.lastName,
+                country:        user.country,
+                picture:        user.picture,
+                picture_alt:    user.picture_alt
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -79,7 +73,7 @@ export default function Register() {
 
         if (res.status === 201) {
             const result = await res.json()
-            console.log("Registration successful: " + result.alt_pic)
+            console.log("Registration successful: " + result.username)
             await Router.push("/login")
         } else {
             const error = await res.text()
@@ -352,9 +346,7 @@ function UserProfile(props) {
     const { setUser, setState } = props
     const [gifs, setGifs] = useState([])
     const [gif, setGif] = useState({
-        large: "",
-        medium: "",
-        small: "",
+        src: "",
         alt: ""
     })
     const [isLoading, setIsLoading] = useState(false)
@@ -366,9 +358,7 @@ function UserProfile(props) {
             if(index === gifs.length) setIndex(0)
             else setIndex((prev) => (prev + 1))
             setGif({
-                large: gifs[index].images.original.url,
-                medium: gifs[index].images.fixed_width.url,
-                small: gifs[index].images.fixed_width_small.url,
+                src: gifs[index].images.original.url,
                 alt: gifs[index].title
             })
         } catch (error) {
@@ -380,14 +370,7 @@ function UserProfile(props) {
     }
 
     const handleNext = () => {
-        setUser((prev) => ({ ...prev, profile_pic: {
-                large: gif.large,
-                medium: gif.medium,
-                small: gif.small,
-                alt: gif.alt
-            }
-        }))
-
+        setUser((prev) => ({ ...prev, picture: gif.src, picture_alt: gif.alt }))
         setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
     }
 
@@ -408,9 +391,7 @@ function UserProfile(props) {
                 const data = await response.json()
                 setGifs(data.data)
                 setGif({
-                    large: data.data[0].images.original.url,
-                    medium: data.data[0].images.fixed_width.url,
-                    small: data.data[0].images.fixed_width_small.url,
+                    src: data.data[0].images.original.url,
                     alt: data.data[0].title
                 })
             } catch (error) {
@@ -427,7 +408,7 @@ function UserProfile(props) {
         <>
             <h2>Choose a profile picture</h2>
 
-            <img className={styles.img} src={gif.large} alt={gif.alt} />
+            <img className={styles.img} src={gif.src} alt={gif.alt} />
 
             <div className={styles.section}>
                 <button type="button" onClick={handleReroll}>{isLoading ? "LOADING" : "Reroll Picture"}</button>
@@ -446,7 +427,6 @@ function UserProfile(props) {
 
 function FinishSetUp(props) {
     const { user, setState } = props
-    const profile = user.profile_pic
     const password = user.password.split("").map(() => "*")
 
     const [buttonText, setButtonText] = useState("Register")
@@ -462,7 +442,7 @@ function FinishSetUp(props) {
             <h2>Your info</h2>
 
             <div className={styles.summary}>
-                <img className={styles.img} src={profile.large} alt={profile.alt} />
+                <img className={styles.img} src={user.picture} alt={user.picture_alt} />
 
                 <div className={styles.info}>
                     <div className={styles.section}>

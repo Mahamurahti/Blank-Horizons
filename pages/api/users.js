@@ -7,30 +7,21 @@ const conn = new PSDB('main')
 export default async (req, res) => {
     const saltRounds = 10
     const {
-        body: { username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic },
+        body: { username, password, first_name, last_name, country, picture, picture_alt },
         method
     } = req
     let sql
     switch (method) {
         case 'POST':
             try {
-                sql = `SELECT username FROM users WHERE username LIKE ?`
-                const [getRows, _] = await conn.query(sql, [username])
-
-                // If username is not taken
-                if(getRows.length === 0) {
-                    sql = `INSERT INTO users ( username, password, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-                    bcrypt.genSalt(saltRounds, function(err, salt) {
-                        bcrypt.hash(password, salt, async function (err, hash) {
-                            const [rows, fields] = await conn.query(sql, [username, hash, first_name, last_name, country, large_pic, medium_pic, small_pic, alt_pic])
-                        })
+                sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
+                bcrypt.genSalt(saltRounds, function(err, salt) {
+                    bcrypt.hash(password, salt, async function (err, hash) {
+                        const [rows, fields] = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                     })
-                    res.statusCode = 201
-                    res.json({ username, password, alt_pic })
-                } else {
-                    res.statusCode = 400
-                    res.send("Username already taken")
-                }
+                })
+                res.statusCode = 201
+                res.json({ username })
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500

@@ -14,24 +14,22 @@ export default async (req, res) => {
     switch (method) {
         case 'POST':
             try {
-                sql = `SELECT username, password, large_pic, medium_pic, small_pic, alt_pic FROM users WHERE username LIKE ?`
+                sql = `SELECT username, password, picture, picture_alt FROM users WHERE username LIKE ?`
                 let result = await conn.query(sql, [username])
                 result = JSON.parse(JSON.stringify(result[0][0]))
                 bcrypt.compare(password, result.password, function (err, match) {
                     if (match) {
                         const user = {
                             username: result.username,
-                            large_pic: result.large_pic,
-                            medium_pic: result.medium_pic,
-                            small_pic: result.small_pic,
-                            alt_pic: result.alt_pic
+                            picture: result.picture,
+                            picture_alt: result.picture_alt
                         }
 
                         // Access Token
                         const accessToken = jwt.sign(
                             { name:username },
                             process.env.SECRET,
-                            { expiresIn:"120s" }
+                            { expiresIn:"1h" }
                         )
 
                         console.log(accessToken)

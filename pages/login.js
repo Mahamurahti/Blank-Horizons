@@ -35,8 +35,8 @@ export default function Login() {
         } else {
             const error = await res.text()
             alert("Login ERROR: " + error)
+            setIsLoading(false)
         }
-        setIsLoading(false)
     }
 
     const printUser = () => console.log(username + " " + password)

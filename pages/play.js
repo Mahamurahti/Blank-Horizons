@@ -172,15 +172,69 @@ function Results(props) {
 
     const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain } = props
 
+    const [saveState, setSaveState] = useState({
+        isPassive: true,
+        isSaving: false,
+        isSaved: false,
+        isError: false
+    })
     let finalMessage = ''
     let revealedWordOrScore = ''
-    let finalScore = ''
     let playable = true
+
+    function reset() {
+        setSaveState({
+            isPassive: true,
+            isSaving: false,
+            isSaved: false,
+            isError: false
+        })
+        playAgain()
+    }
+
+    async function saveScore() {
+        setSaveState((prev) => ({ ...prev, isPassive: false, isSaving: true }))
+        try {
+            const user = JSON.parse(localStorage.getItem('user'))
+            const token = localStorage.getItem('token')
+
+            const res = await fetch('api/scores', {
+                body: JSON.stringify({
+                    username: user.username,
+                    score: score
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                method: 'POST'
+            })
+            const data = await res
+            console.log(data)
+            if(data.status === 401 || data.status === 403) {
+                console.log('Unauthorized')
+                setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
+            }else if(data.status === 500) {
+                console.log('Database error')
+                setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
+            } else {
+                console.log('Authorized')
+                setSaveState((prev) => ({ ...prev, isSaving: false, isSaved: true }))
+            }
+        } catch (error) {
+            console.error(error)
+            setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
+        }
+    }
 
     if(checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.WIN) {
         finalMessage = 'Congratulations you won!'
         revealedWordOrScore = 'You final score was ' + score
         playable = false
+
+        if(localStorage.getItem('token') && saveState.isPassive) saveScore()
+
     } else if (checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.LOSE) {
         finalMessage = 'Unfortunately you lost!'
         revealedWordOrScore = 'The word you were guessing was ' + selectedWord
@@ -195,7 +249,10 @@ function Results(props) {
                 <div className={styles.results}>
                     <h2 className={styles.resultMessage}>{finalMessage}</h2>
                     <h3 className={styles.revealWord}>{revealedWordOrScore}</h3>
-                    <button className={styles.playButton} onClick={playAgain}>Play Again!</button>
+                    {saveState.isSaving && <p>Score is being saved to database</p>}
+                    {saveState.isSaved && <p>Score saved to database</p>}
+                    {saveState.isError && <p>An error occurred while saving score</p>}
+                    <button className={styles.playButton} onClick={reset}>Play Again!</button>
                 </div>
             </div>
         </>

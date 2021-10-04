@@ -38,7 +38,7 @@ export default function Home() {
             <p className={styles.description}>
               Play Hangman and compete against others!
             </p> :
-            <img className={styles.img} src={loggedInUser.large_pic} alt={loggedInUser.alt_pic} />
+            <img className={styles.img} src={loggedInUser.picture} alt={loggedInUser.picture_alt} />
         }
 
         <div className={styles.grid}>

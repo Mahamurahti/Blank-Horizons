@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Play.module.css'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
-import { showNotification as show } from "../helpers/helpers";
+import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
 
 const words = ["wizard", "harry", "potter", "philosopher", "wand"]
 let selectedWord = words[Math.floor(Math.random() * words.length)]
@@ -14,6 +14,7 @@ export default function Play() {
     const [correctLetters, setCorrectLetters] = useState([])
     const [wrongLetters, setWrongLetters] = useState([])
     const [showNotification, setShowNotification] = useState(false)
+    const [score, setScore] = useState(12)
 
     useEffect(() => {
         const handleKeydown = (e) => {
@@ -30,6 +31,7 @@ export default function Play() {
                 } else {
                     if(!wrongLetters.includes(letter)) {
                         setWrongLetters((prev) => [ ...prev, letter])
+                        setScore((prev) => prev - 2)
                     } else {
                         show(setShowNotification)
                     }
@@ -40,6 +42,17 @@ export default function Play() {
 
         return () => window.removeEventListener('keydown', handleKeydown)
     }, [correctLetters, wrongLetters, playable])
+
+    function playAgain() {
+        setPlayable(true)
+
+        setCorrectLetters([])
+        setWrongLetters([])
+        setScore(12)
+
+        const random = Math.floor(Math.random() * words.length)
+        selectedWord = words[random]
+    }
 
     return (
         <div className={styles.container}>
@@ -52,16 +65,23 @@ export default function Play() {
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Play!
+                    Score : {score}
                 </h1>
 
                <div className={styles.gameContainer}>
                    <Figure wrongLetters={wrongLetters} />
                    <WrongLetters wrongLetters={wrongLetters} />
                    <Word selectedWord={selectedWord} correctLetters={correctLetters} />
-                   <Notification showNotification={showNotification} />
-                   {/*<Results />*/}
                </div>
+                <Notification showNotification={showNotification} />
+                <Results
+                    correctLetters={correctLetters}
+                    wrongLetters={wrongLetters}
+                    selectedWord={selectedWord}
+                    score={score}
+                    setPlayable={setPlayable}
+                    playAgain={playAgain}
+                />
             </main>
 
             <footer className={styles.footer}>
@@ -135,28 +155,48 @@ function Word(props) {
     )
 }
 
-function Results() {
+function Notification(props) {
+
+    const { showNotification } = props
+
     return (
         <>
-            <div className={styles.resultsContainer}>
-                <div className={styles.results}>
-                    <h2 className={styles.resultMessage}></h2>
-                    <h3 className={styles.revealWord}></h3>
-                    <button className={styles.playButton}></button>
-                </div>
+            <div className={showNotification ? styles.notificationContainer : styles.hide}>
+                <p className={styles.notification}>You have already guessed this letter</p>
             </div>
         </>
     )
 }
 
-function Notification(props) {
+function Results(props) {
 
-    const { showNotification } = props
+    const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain } = props
 
-    return showNotification && (
+    let finalMessage = ''
+    let revealedWordOrScore = ''
+    let finalScore = ''
+    let playable = true
+
+    if(checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.WIN) {
+        finalMessage = 'Congratulations you won!'
+        revealedWordOrScore = 'You final score was ' + score
+        playable = false
+    } else if (checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.LOSE) {
+        finalMessage = 'Unfortunately you lost!'
+        revealedWordOrScore = 'The word you were guessing was ' + selectedWord
+        playable = false
+    }
+
+    useEffect(() => setPlayable(playable))
+
+    return (
         <>
-            <div className={styles.notificationContainer}>
-                <p className={styles.notification}>You have already guessed this letter</p>
+            <div className={styles.resultsContainer} style={finalMessage !== '' ? {display: "flex"} : {display: "none"}}>
+                <div className={styles.results}>
+                    <h2 className={styles.resultMessage}>{finalMessage}</h2>
+                    <h3 className={styles.revealWord}>{revealedWordOrScore}</h3>
+                    <button className={styles.playButton} onClick={playAgain}>Play Again!</button>
+                </div>
             </div>
         </>
     )

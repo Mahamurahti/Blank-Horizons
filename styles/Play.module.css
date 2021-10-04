@@ -113,7 +113,16 @@
 }
 
 .resultsContainer {
-
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* display: flex; */
+    display: none;
+    align-items: center;
+    justify-content: center;
 }
 
 .results {
@@ -133,23 +142,32 @@
 }
 
 .notificationContainer {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px 10px 0 0;
-    padding: 15px 20px;
     position: absolute;
     bottom: 50px;
     left: 0;
     right: 0;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 10px;
+    padding: 15px 20px;
     margin-left: 100px;
     margin-right: 100px;
     text-align: center;
-    transition: transform 0.3s ease-in-out;
+    transition: .2s ease-in-out;
 }
 
-.notification {
 
+.hide {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    margin-left: 100px;
+    margin-right: 100px;
+    text-align: center;
+    transition: .2s ease-in-out;
 }
-
 /* --- */
 
 .logo {

@@ -16,7 +16,7 @@ export default function Leaderboard() {
                 const res = await fetch('api/scores', { method: 'GET' })
                 if (res.status === 200) {
                     const result = await res.json()
-                    console.log(result)
+
                     setScores(result)
                 } else {
                     console.log("No scores found")
@@ -47,7 +47,7 @@ export default function Leaderboard() {
                     <div className={styles.loading} />
                 ) : (
                     <ul className={styles.leaderboard_container}>
-                        {scores.map((score, index) => (
+                        {scores.sort((a,b) => a.score < b.score ? 1 : -1).map((score, index) => (
                             <li key={index} className={styles.entry}>
                                 <img className={styles.img} src={score.picture} alt={score.picture_alt} />
                                 {score.username} <span className={styles.score}>{score.score}</span>

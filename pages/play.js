@@ -4,9 +4,10 @@ import Router from "next/router";
 import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
 import Footer from "../components/Footer";
+import words from "../words"
 
-const words = ["wizard", "harry", "potter", "philosopher", "wand"]
-let selectedWord = words[Math.floor(Math.random() * words.length)]
+let allWords = words()
+let selectedWord = allWords[Math.floor(Math.random() * allWords.length)]
 
 export default function Play() {
 
@@ -50,8 +51,8 @@ export default function Play() {
         setWrongLetters([])
         setScore(12)
 
-        const random = Math.floor(Math.random() * words.length)
-        selectedWord = words[random]
+        const random = Math.floor(Math.random() * allWords.length)
+        selectedWord = allWords[random]
     }
 
     return (

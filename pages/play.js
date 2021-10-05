@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Play.module.css'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
+import Footer from "../components/Footer";
 
 const words = ["wizard", "harry", "potter", "philosopher", "wand"]
 let selectedWord = words[Math.floor(Math.random() * words.length)]
@@ -84,18 +84,7 @@ export default function Play() {
                 />
             </main>
 
-            <footer className={styles.footer}>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Powered by{' '}
-                    <span className={styles.logo}>
-                        <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                    </span>
-                </a>
-            </footer>
+            <Footer />
         </div>
     )
 }

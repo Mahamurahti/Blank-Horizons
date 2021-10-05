@@ -1,9 +1,34 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Leaderboard.module.css'
 import Router from "next/router";
+import { useState, useEffect } from 'react'
+import Footer from "../components/Footer";
 
 export default function Leaderboard() {
+
+    const [scores, setScores] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        async function getScores() {
+            setIsLoading(true)
+            try {
+                const res = await fetch('api/scores', { method: 'GET' })
+                if (res.status === 200) {
+                    const result = await res.json()
+                    console.log(result)
+                    setScores(result)
+                } else {
+                    console.log("No scores found")
+                }
+            } catch (e) {
+                console.error(e)
+            }
+            setIsLoading(false)
+        }
+        getScores()
+    }, [])
+
     return (
         <div className={styles.container}>
             <Head>
@@ -18,23 +43,21 @@ export default function Leaderboard() {
                     Leaderboard
                 </h1>
 
-                <div className={styles.leaderboardContainer}>
-                    This is the leaderboard container...
-                </div>
+                {isLoading ? (
+                    <div className={styles.loading} />
+                ) : (
+                    <ul className={styles.leaderboard_container}>
+                        {scores.map((score, index) => (
+                            <li key={index} className={styles.entry}>
+                                <img className={styles.img} src={score.picture} alt={score.picture_alt} />
+                                {score.username} <span className={styles.score}>{score.score}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </main>
 
-            <footer className={styles.footer}>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Powered by{' '}
-                    <span className={styles.logo}>
-                        <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                    </span>
-                </a>
-            </footer>
+            <Footer />
         </div>
     )
 }

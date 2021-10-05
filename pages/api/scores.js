@@ -44,7 +44,7 @@ export default async (req, res) => {
             break
         case 'GET':
             try {
-                const [resultList] = await conn.query('SELECT users.username, scores.score FROM users INNER JOIN scores ON users.id = scores.user_id')
+                const [resultList] = await conn.query('SELECT users.username, scores.score, users.picture, users.picture_alt FROM users INNER JOIN scores ON users.id = scores.user_id')
                 res.statusCode = 200
                 res.json(resultList)
             } catch (e) {

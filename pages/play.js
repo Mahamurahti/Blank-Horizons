@@ -227,7 +227,7 @@ function Results(props) {
 
     } else if (checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.LOSE) {
         finalMessage = 'Unfortunately you lost!'
-        revealedWordOrScore = 'The word you were guessing was ' + selectedWord
+        revealedWordOrScore = <span>The word you were guessing was <span className={styles.reveal}>{selectedWord}</span></span>
         playable = false
     }
 
@@ -236,14 +236,13 @@ function Results(props) {
     return (
         <>
             <div className={styles.results_container} style={finalMessage !== '' ? {display: "flex"} : {display: "none"}}>
-                <div className={styles.results}>
-                    <h2 className={styles.result_message}>{finalMessage}</h2>
-                    <h3 className={styles.reveal_word}>{revealedWordOrScore}</h3>
-                    {saveState.isSaving && <p>Score is being saved to database</p>}
-                    {saveState.isSaved && <p>Score saved to database</p>}
-                    {saveState.isError && <p>An error occurred while saving score</p>}
-                    <button className={styles.play_button} onClick={reset}>Play Again!</button>
-                </div>
+                <h2 className={styles.result_message}>{finalMessage}</h2>
+                <h3 className={styles.reveal_word}>{revealedWordOrScore}</h3>
+                {saveState.isSaving && <p className={styles.orange}>Score is being saved to database</p>}
+                {saveState.isSaved && <p className={styles.green}>Score saved to database</p>}
+                {saveState.isError && <p className={styles.red}>An error occurred while saving score</p>}
+                <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
+                <button className={styles.back_button} onClick={() => Router.push('/')}>&larr; Home</button>
             </div>
         </>
     )

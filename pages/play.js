@@ -68,7 +68,7 @@ export default function Play() {
                     Score : {score}
                 </h1>
 
-               <div className={styles.gameContainer}>
+               <div className={styles.game_container}>
                    <Figure wrongLetters={wrongLetters} />
                    <WrongLetters wrongLetters={wrongLetters} />
                    <Word selectedWord={selectedWord} correctLetters={correctLetters} />
@@ -108,13 +108,13 @@ function Figure(props) {
     
     return (
         <>
-            <h1 className={styles.figureContainer}>
-                {errors > 0 && <div className={styles.figurePart}>W</div>}
-                {errors > 1 && <div className={styles.figurePart}>R</div>}
-                {errors > 2 && <div className={styles.figurePart}>O</div>}
-                {errors > 3 && <div className={styles.figurePart}>N</div>}
-                {errors > 4 && <div className={styles.figurePart}>G</div>}
-                {errors > 5 && <div className={styles.figurePart}>!</div>}
+            <h1 className={styles.figure_container}>
+                {errors > 0 && <div className={styles.figure_part}>W</div>}
+                {errors > 1 && <div className={styles.figure_part}>R</div>}
+                {errors > 2 && <div className={styles.figure_part}>O</div>}
+                {errors > 3 && <div className={styles.figure_part}>N</div>}
+                {errors > 4 && <div className={styles.figure_part}>G</div>}
+                {errors > 5 && <div className={styles.figure_part}>!</div>}
             </h1>
         </>
     )
@@ -126,7 +126,7 @@ function WrongLetters(props) {
 
     return (
         <>
-            <div className={styles.wrongContainer}>
+            <div className={styles.wrong_container}>
                 <div>
                     {wrongLetters.length > 0 && <p>Wrong</p>}
                     {wrongLetters
@@ -161,8 +161,8 @@ function Notification(props) {
 
     return (
         <>
-            <div className={showNotification ? styles.notificationContainer : styles.hide}>
-                <p className={styles.notification}>You have already guessed this letter</p>
+            <div className={showNotification ? styles.notification_container : styles.hide}>
+                <p>You have already guessed this letter</p>
             </div>
         </>
     )
@@ -245,14 +245,14 @@ function Results(props) {
 
     return (
         <>
-            <div className={styles.resultsContainer} style={finalMessage !== '' ? {display: "flex"} : {display: "none"}}>
+            <div className={styles.results_container} style={finalMessage !== '' ? {display: "flex"} : {display: "none"}}>
                 <div className={styles.results}>
-                    <h2 className={styles.resultMessage}>{finalMessage}</h2>
-                    <h3 className={styles.revealWord}>{revealedWordOrScore}</h3>
+                    <h2 className={styles.result_message}>{finalMessage}</h2>
+                    <h3 className={styles.reveal_word}>{revealedWordOrScore}</h3>
                     {saveState.isSaving && <p>Score is being saved to database</p>}
                     {saveState.isSaved && <p>Score saved to database</p>}
                     {saveState.isError && <p>An error occurred while saving score</p>}
-                    <button className={styles.playButton} onClick={reset}>Play Again!</button>
+                    <button className={styles.play_button} onClick={reset}>Play Again!</button>
                 </div>
             </div>
         </>

@@ -51,6 +51,7 @@
     display: inherit;
     flex-direction: inherit;
     width: 300px;
+    position: relative;
 }
 
 .section label {
@@ -154,7 +155,7 @@
     display: flex;
 }
 
-.info {
+.user_info {
     display: flex;
     flex-direction: column;
     margin: 0 2rem;

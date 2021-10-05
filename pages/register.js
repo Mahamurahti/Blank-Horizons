@@ -147,6 +147,7 @@ function UserInfo(props) {
         setIsLoading(true)
         let isValid = true
 
+        // Check is the username taken
         try {
             const res = await fetch('api/username', {
                 body: JSON.stringify({
@@ -162,7 +163,6 @@ function UserInfo(props) {
                 console.log("Username not taken")
             } else {
                 setIsUsernameTaken(true)
-                console.log("Username taken")
                 isValid = false
             }
         } catch (e) {
@@ -197,14 +197,6 @@ function UserInfo(props) {
             isValid = false
             setError((prev) => ({ ...prev, terms: true }))
         }
-
-        console.log("isValid: " + isValid)
-        console.log(!stringReg.test(user.username))
-        console.log(!stringReg.test(user.firstName))
-        console.log(!stringReg.test(user.lastName))
-        console.log(!passReg.test(user.password))
-        console.log(!stringReg.test(user.country))
-        console.log(!user.terms)
 
         setIsLoading(false)
 
@@ -255,7 +247,7 @@ function UserInfo(props) {
                     required />
                 {isUsernameTaken &&
                     <p className={styles.taken}>Username taken. <br/><span>Please use a different one.</span></p>
-                    }
+                }
             </div>
 
             <div className={styles.section}>
@@ -344,11 +336,10 @@ function UserInfo(props) {
 function UserProfile(props) {
 
     const { setUser, setState } = props
+    // Array of fetched GIFs
     const [gifs, setGifs] = useState([])
-    const [gif, setGif] = useState({
-        src: "",
-        alt: ""
-    })
+    // Currently active GIF
+    const [gif, setGif] = useState({ src: "", alt: "" })
     const [isLoading, setIsLoading] = useState(false)
     const [index, setIndex] = useState(0)
 
@@ -357,6 +348,7 @@ function UserProfile(props) {
         try {
             if(index === gifs.length) setIndex(0)
             else setIndex((prev) => (prev + 1))
+
             setGif({
                 src: gifs[index].images.original.url,
                 alt: gifs[index].title
@@ -380,14 +372,10 @@ function UserProfile(props) {
 
     useEffect(() => {
         setIsLoading(true)
-        console.log("UserProfile Rendered")
-
         async function fetchData() {
-            console.log('Setting profile picture...')
             try {
                 const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
                 const response = await fetch(url)
-                console.log("Begin response")
                 const data = await response.json()
                 setGifs(data.data)
                 setGif({
@@ -444,7 +432,7 @@ function FinishSetUp(props) {
             <div className={styles.summary}>
                 <img className={styles.img} src={user.picture} alt={user.picture_alt} />
 
-                <div className={styles.info}>
+                <div className={styles.user_info}>
                     <div className={styles.section}>
                         <p className={styles.bold}>Username:</p>
                         <p className={styles.underline}>{user.username}</p>

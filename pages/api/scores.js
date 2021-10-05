@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PSDB } from 'planetscale-node'
 import jwt from 'jsonwebtoken'
 
@@ -16,21 +15,22 @@ export default async (req, res) => {
                 await authenticateToken(req, res)
 
                 sql = `SELECT ID FROM users WHERE username LIKE ?`
-                const [getRows, _] = await conn.query(sql, [username])
-                const id = getRows[0].ID
+                const [resultId] = await conn.query(sql, [username])
+                const id = resultId[0].ID
 
                 sql = `SELECT score FROM scores WHERE user_id LIKE ?`
-                const [getRows2, _2] = await conn.query(sql, [id])
-                const prevScore = getRows2[0]?.score
+                const [resultScore] = await conn.query(sql, [id])
+                const prevScore = resultScore[0]?.score
 
                 let newScore = score
+                // If there is a previous score, update the score, otherwise make a new entry
                 if(prevScore) {
                     newScore += prevScore
                     sql = `UPDATE scores SET score = ? WHERE user_id LIKE ?`
-                    const [rows, fields] = await conn.query(sql, [newScore, id])
+                    await conn.query(sql, [newScore, id])
                 } else {
                     sql = `INSERT INTO scores (user_id, score) VALUES (?, ?)`
-                    const [rows, fields] = await conn.query(sql, [id, newScore])
+                    await conn.query(sql, [id, newScore])
                 }
 
                 res.statusCode = 201
@@ -44,9 +44,9 @@ export default async (req, res) => {
             break
         case 'GET':
             try {
-                const [getRows, _] = await conn.query('SELECT users.username, scores.score FROM users INNER JOIN scores ON users.id = scores.user_id')
+                const [resultList] = await conn.query('SELECT users.username, scores.score FROM users INNER JOIN scores ON users.id = scores.user_id')
                 res.statusCode = 200
-                res.json(getRows)
+                res.json(resultList)
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500
@@ -66,13 +66,8 @@ function authenticateToken(req, res) {
 
     if (token == null) return res.status(401).end('Unauthorized')
 
-    console.log(token)
-
     jwt.verify(token, process.env.SECRET, (err, user) => {
-        console.log(err)
-
         if (err) return res.status(403).end('Forbidden')
-
         req.user = user
     })
 }

@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PSDB } from 'planetscale-node'
 
 const conn = new PSDB('main')
@@ -13,9 +12,9 @@ export default async (req, res) => {
         case 'POST':
             try {
                 sql = `SELECT username FROM users WHERE username LIKE ?`
-                const [getRows, _] = await conn.query(sql, [username])
+                const [result] = await conn.query(sql, [username])
                 // If username is not taken
-                if(getRows.length === 0) {
+                if(result.length === 0) {
                     res.statusCode = 201
                     res.json({ username })
                 } else {

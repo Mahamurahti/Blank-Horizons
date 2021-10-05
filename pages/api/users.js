@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PSDB } from 'planetscale-node'
 import bcrypt from 'bcrypt'
 
@@ -17,7 +16,7 @@ export default async (req, res) => {
                 sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
                 bcrypt.genSalt(saltRounds, function(err, salt) {
                     bcrypt.hash(password, salt, async function (err, hash) {
-                        const [rows, fields] = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
+                        await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                     })
                 })
                 res.statusCode = 201
@@ -31,9 +30,9 @@ export default async (req, res) => {
             break
         case 'GET':
             try {
-                const [getRows, _] = await conn.query('SELECT * FROM users')
+                const [resultList] = await conn.query('SELECT * FROM users')
                 res.statusCode = 200
-                res.json(getRows)
+                res.json(resultList)
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500

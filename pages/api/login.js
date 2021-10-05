@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PSDB } from 'planetscale-node'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -15,21 +14,21 @@ export default async (req, res) => {
         case 'POST':
             try {
                 sql = `SELECT username, password, picture, picture_alt FROM users WHERE username LIKE ?`
-                let result = await conn.query(sql, [username])
-                result = JSON.parse(JSON.stringify(result[0][0]))
-                bcrypt.compare(password, result.password, function (err, match) {
+                const resultUser = await conn.query(sql, [username])
+                const parsedUser = JSON.parse(JSON.stringify(resultUser[0][0]))
+                bcrypt.compare(password, parsedUser.password, function (err, match) {
                     if (match) {
                         const user = {
-                            username: result.username,
-                            picture: result.picture,
-                            picture_alt: result.picture_alt
+                            username: parsedUser.username,
+                            picture: parsedUser.picture,
+                            picture_alt: parsedUser.picture_alt
                         }
 
-                        // Access Token
+                        // Token active for one hour, may change in the future
                         const accessToken = jwt.sign(
-                            { name:username },
+                            { name: username },
                             process.env.SECRET,
-                            { expiresIn:"1h" }
+                            { expiresIn: "1h" }
                         )
 
                         console.log(accessToken)

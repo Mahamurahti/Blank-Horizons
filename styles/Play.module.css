@@ -66,7 +66,7 @@
 
 /* Game */
 
-.gameContainer {
+.game_container {
     padding: 0.5rem;
     border: solid 1px #F2F2F2;
     position: relative;
@@ -75,16 +75,16 @@
     height: 600px;
 }
 
-.figureContainer {
+.figure_container {
     display: flex;
     justify-content: center;
 }
 
-.figurePart {
+.figure_part {
     color: limegreen;
 }
 
-.wrongContainer {
+.wrong_container {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -112,14 +112,13 @@
     transform: translateX(-50%);
 }
 
-.resultsContainer {
+.results_container {
     background-color: rgba(0, 0, 0, 0.3);
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    /* display: flex; */
     display: none;
     align-items: center;
     justify-content: center;
@@ -129,19 +128,19 @@
 
 }
 
-.resultMessage {
+.result_message {
 
 }
 
-.revealWord {
+.reveal_word {
 
 }
 
-.playButton {
+.play_button {
 
 }
 
-.notificationContainer {
+.notification_container {
     position: absolute;
     bottom: 50px;
     left: 0;

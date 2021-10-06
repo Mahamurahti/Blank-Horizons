@@ -6,6 +6,10 @@ import Footer from "../components/Footer";
 
 export default function Register() {
 
+    useEffect(() => {
+        if(localStorage.getItem('token')) Router.push('/')
+    }, [])
+
     const [user, setUser] = useState({
         username:   "",
         password:   "",

@@ -166,6 +166,7 @@ function Results(props) {
         isPassive: true,
         isSaving: false,
         isSaved: false,
+        isUnauthorized: false,
         isError: false
     })
     let finalMessage = ''
@@ -177,6 +178,7 @@ function Results(props) {
             isPassive: true,
             isSaving: false,
             isSaved: false,
+            isUnauthorized: false,
             isError: false
         })
         playAgain()
@@ -204,7 +206,7 @@ function Results(props) {
             console.log(data)
             if(data.status === 401 || data.status === 403) {
                 console.log('Unauthorized')
-                setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
+                setSaveState((prev) => ({ ...prev, isSaving: false, isUnauthorized: true }))
             }else if(data.status === 500) {
                 console.log('Database error')
                 setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
@@ -241,6 +243,7 @@ function Results(props) {
                 {saveState.isSaving && <p className={styles.orange}>Score is being saved to database</p>}
                 {saveState.isSaved && <p className={styles.green}>Score saved to database</p>}
                 {saveState.isError && <p className={styles.red}>An error occurred while saving score</p>}
+                {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
                 <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
                 <button className={styles.back_button} onClick={() => Router.push('/')}>&larr; Home</button>
             </div>

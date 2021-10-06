@@ -24,11 +24,11 @@ export default async (req, res) => {
                             picture_alt: parsedUser.picture_alt
                         }
 
-                        // Token active for one hour, may change in the future
+                        // Token active for twelve hours, may change in the future
                         const accessToken = jwt.sign(
                             { name: username },
                             process.env.SECRET,
-                            { expiresIn: "1h" }
+                            { expiresIn: "12h" }
                         )
 
                         console.log(accessToken)

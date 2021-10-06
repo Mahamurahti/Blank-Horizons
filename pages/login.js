@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Login.module.css'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Router from "next/router";
 import Footer from "../components/Footer";
 
@@ -10,6 +10,10 @@ export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        if(localStorage.getItem('token')) Router.push('/')
+    }, [])
 
     const handleSubmit = async e => {
         e.preventDefault()

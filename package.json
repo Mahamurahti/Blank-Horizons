@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "gsap": "^3.8.0",
     "jsonwebtoken": "^8.5.1",
     "next": "11.1.2",
     "planetscale-node": "^0.1.0",

@@ -12,31 +12,29 @@ export default async (req, res) => {
     switch (method) {
         case 'POST':
             try {
-                const isAuthenticated = await authenticateToken(req, res)
+                await authenticateToken(req, res)
 
-                if(isAuthenticated) {
-                    sql = `SELECT ID FROM users WHERE username LIKE ?`
-                    const [resultId] = await conn.query(sql, [username])
-                    const id = resultId[0].ID
+                sql = `SELECT ID FROM users WHERE username LIKE ?`
+                const [resultId] = await conn.query(sql, [username])
+                const id = resultId[0].ID
 
-                    sql = `SELECT score FROM scores WHERE user_id LIKE ?`
-                    const [resultScore] = await conn.query(sql, [id])
-                    const prevScore = resultScore[0]?.score
+                sql = `SELECT score FROM scores WHERE user_id LIKE ?`
+                const [resultScore] = await conn.query(sql, [id])
+                const prevScore = resultScore[0]?.score
 
-                    let newScore = score
-                    // If there is a previous score, update the score, otherwise make a new entry
-                    if(prevScore) {
-                        newScore += prevScore
-                        sql = `UPDATE scores SET score = ? WHERE user_id LIKE ?`
-                        await conn.query(sql, [newScore, id])
-                    } else {
-                        sql = `INSERT INTO scores (user_id, score) VALUES (?, ?)`
-                        await conn.query(sql, [id, newScore])
-                    }
-
-                    res.statusCode = 201
-                    res.json({ username })
+                let newScore = score
+                // If there is a previous score, update the score, otherwise make a new entry
+                if(prevScore) {
+                    newScore += prevScore
+                    sql = `UPDATE scores SET score = ? WHERE user_id LIKE ?`
+                    await conn.query(sql, [newScore, id])
+                } else {
+                    sql = `INSERT INTO scores (user_id, score) VALUES (?, ?)`
+                    await conn.query(sql, [id, newScore])
                 }
+
+                res.statusCode = 201
+                res.json({ username })
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500
@@ -66,17 +64,10 @@ function authenticateToken(req, res) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
-    if (token == null) {
-        res.status(401).end('Unauthorized')
-        return false
-    }
+    if (token == null) return res.status(401).end('Unauthorized')
 
     jwt.verify(token, process.env.SECRET, (err, user) => {
-        if (err) {
-            res.status(403).end('Forbidden')
-            return false
-        }
+        if (err) return res.status(403).end('Forbidden')
         req.user = user
-        return true
     })
 }

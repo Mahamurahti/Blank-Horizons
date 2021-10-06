@@ -337,11 +337,9 @@ function UserProfile(props) {
     const [index, setIndex] = useState(0)
 
     const handleReroll = () => {
-        setIsLoading(true)
         try {
-            if(index === gifs.length) setIndex(0)
+            if(index === gifs.length - 1) setIndex(0)
             else setIndex((prev) => (prev + 1))
-
             setGif({
                 src: gifs[index].images.original.url,
                 alt: gifs[index].title
@@ -350,7 +348,6 @@ function UserProfile(props) {
             console.error(error)
         } finally {
             console.log(gif)
-            setIsLoading(false)
         }
     }
 
@@ -367,7 +364,7 @@ function UserProfile(props) {
         setIsLoading(true)
         async function fetchData() {
             try {
-                const url = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.GIPHY_API_KEY}`
+                const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=funny&limit=50&rating=r`
                 const response = await fetch(url)
                 const data = await response.json()
                 setGifs(data.data)

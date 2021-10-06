@@ -57,6 +57,13 @@ export default function Play() {
         selectedWord = allWords[random]
     }
 
+    function back() {
+        const random = Math.floor(Math.random() * allWords.length)
+        selectedWord = allWords[random]
+
+        Router.push('/')
+    }
+
     return (
         <div className={styles.container}>
             <Head>
@@ -64,7 +71,7 @@ export default function Play() {
                 <meta name="description" content="Play Hangman!" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={back}>&larr;</button>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
@@ -84,6 +91,7 @@ export default function Play() {
                     score={score}
                     setPlayable={setPlayable}
                     playAgain={playAgain}
+                    back={back}
                 />
             </main>
             <BackgroundPlanet wrongLetters={wrongLetters} />
@@ -163,7 +171,7 @@ function Notification(props) {
 
 function Results(props) {
 
-    const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain } = props
+    const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain, back } = props
 
     const [saveState, setSaveState] = useState({
         isPassive: true,
@@ -248,7 +256,7 @@ function Results(props) {
                 {saveState.isError && <p className={styles.red}>An error occurred while saving score</p>}
                 {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
                 <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
-                <button className={styles.back_button} onClick={() => Router.push('/')}>&larr; Home</button>
+                <button className={styles.back_button} onClick={back}>&larr; Home</button>
             </div>
         </>
     )

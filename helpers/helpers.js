@@ -17,7 +17,7 @@ export function checkIfWon(correct, wrong, word) {
         if(!correct.includes(letter)) status = ''
     })
 
-    if(wrong.length === 6) status = GameStatus.LOSE
+    if(wrong.length >= 6) status = GameStatus.LOSE
 
     return status
 }

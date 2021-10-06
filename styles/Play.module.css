@@ -1,15 +1,6 @@
-.home {
-    position: fixed;
-    top: 2rem;
-    left: 2rem;
-    background: none;
-    border: 1px solid #F2F2F2;
-    color: #F2F2F2;
-    height: 2rem;
-    width: 2rem;
-    font-size: 1rem;
-}
 .container {
+    overflow: hidden;
+    position: relative;
     min-height: 100vh;
     padding: 0 0.5rem;
     display: flex;
@@ -26,6 +17,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 20;
 }
 
 .title {
@@ -52,10 +44,10 @@
 
 .game_container {
     padding: 0.5rem;
-    border: solid 1px #F2F2F2;
+    /*border: solid 1px #F2F2F2;*/
     position: relative;
 
-    width: 900px;
+    width: 1000px;
     height: 600px;
 }
 
@@ -69,29 +61,29 @@
 }
 
 .wrong_container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     display: flex;
-    flex-direction: column;
-    text-align: right;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
 }
 
 .letter {
-    border-bottom: 3px solid #2980b9;
+    border-bottom: 3px solid #F2F2F2;
     display: inline-flex;
-    font-size: 30px;
+    font-size: 40px;
     align-items: center;
     justify-content: center;
-    margin: 0 3px;
-    height: 50px;
-    width: 20px;
+    margin: 0 6px;
+    height: 60px;
+    width: 30px;
 }
 
 .word {
     display: flex;
     position: absolute;
-    bottom: 10px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -107,7 +99,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-bottom: 2rem;
+    padding: 0 2rem 2rem 2rem;
+    z-index: 100;
 }
 
 .result_message {
@@ -119,7 +112,7 @@
 }
 
 .reveal {
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-decoration: underline;
 }
 
@@ -156,6 +149,8 @@
     margin-right: 100px;
     text-align: center;
     transition: .2s ease-in-out;
+    z-index: 10;
+    font-size: 20px;
 }
 
 
@@ -169,6 +164,11 @@
     margin-right: 100px;
     text-align: center;
     transition: .2s ease-in-out;
+}
+
+.background {
+    position: fixed;
+    opacity: .1;
 }
 
 .red {

@@ -4,6 +4,7 @@ import Router from "next/router";
 import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
 import Footer from "../components/Footer";
+import Planet from '../components/Planet'
 import words from "../words"
 
 let allWords = words()
@@ -33,6 +34,7 @@ export default function Play() {
                     if(!wrongLetters.includes(letter)) {
                         setWrongLetters((prev) => [ ...prev, letter])
                         setScore((prev) => prev - 2)
+                        if(score <= 0) setScore(0)
                     } else {
                         show(setShowNotification)
                     }
@@ -62,7 +64,7 @@ export default function Play() {
                 <meta name="description" content="Play Hangman!" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <button className={styles.home} onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
@@ -84,6 +86,7 @@ export default function Play() {
                     playAgain={playAgain}
                 />
             </main>
+            <BackgroundPlanet wrongLetters={wrongLetters} />
 
             <Footer />
         </div>
@@ -95,17 +98,19 @@ function Figure(props) {
     const { wrongLetters } = props
 
     const errors = wrongLetters.length
-    
+    const [sphereRotation, setSphereRotation] = useState(0)
+
     return (
         <>
-            <h1 className={styles.figure_container}>
-                {errors > 0 && <div className={styles.figure_part}>W</div>}
-                {errors > 1 && <div className={styles.figure_part}>R</div>}
-                {errors > 2 && <div className={styles.figure_part}>O</div>}
-                {errors > 3 && <div className={styles.figure_part}>N</div>}
-                {errors > 4 && <div className={styles.figure_part}>G</div>}
-                {errors > 5 && <div className={styles.figure_part}>!</div>}
-            </h1>
+            <div className={styles.figure_container}>
+                {errors <= 0 && <Planet segments={36} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 1 && <Planet segments={24} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 2 && <Planet segments={12} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 3 && <Planet segments={8} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 4 && <Planet segments={6} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 5 && <Planet segments={4} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors >= 6 && <Planet segments={2} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+            </div>
         </>
     )
 }
@@ -117,12 +122,10 @@ function WrongLetters(props) {
     return (
         <>
             <div className={styles.wrong_container}>
-                <div>
-                    {wrongLetters.length > 0 && <p>Wrong</p>}
-                    {wrongLetters
-                        .map((letter, index) => <span key={index}>{letter}</span>)
-                        .reduce((prev, curr) => prev === null ? [curr] : [prev, ', ', curr], null)}
-                </div>
+                {wrongLetters.length > 0 && <span>Wrong&nbsp; : &nbsp;</span>}
+                {wrongLetters
+                    .map((letter, index) => <span key={index}>{letter.toUpperCase()}</span>)
+                    .reduce((prev, curr) => prev === null ? [curr] : [prev, <span>,&nbsp;</span>, curr], null)}
             </div>
         </>
     )
@@ -137,7 +140,7 @@ function Word(props) {
             <div className={styles.word}>
                 {selectedWord.split("").map((letter, index) => (
                     <span className={styles.letter} key={index}>
-                        {correctLetters.includes(letter) ? letter : ""}
+                        {correctLetters.includes(letter) ? letter.toUpperCase() : ""}
                     </span>
                 ))}
             </div>
@@ -246,6 +249,63 @@ function Results(props) {
                 {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
                 <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
                 <button className={styles.back_button} onClick={() => Router.push('/')}>&larr; Home</button>
+            </div>
+        </>
+    )
+}
+
+function BackgroundPlanet(props) {
+
+    const { wrongLetters } = props
+
+    const errors = wrongLetters.length
+    const [sphereRotation, setSphereRotation] = useState(0)
+
+    return (
+        <>
+            <div className={styles.background}>
+                {errors <= 0 && <Planet
+                    segments={36}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors === 1 && <Planet
+                    segments={24}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors === 2 && <Planet
+                    segments={12}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors === 3 && <Planet
+                    segments={8}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors === 4 && <Planet
+                    segments={6}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors === 5 && <Planet
+                    segments={4}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
+                {errors >= 6 && <Planet
+                    segments={2}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                    isBackground={true}
+                />}
             </div>
         </>
     )

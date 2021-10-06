@@ -13,7 +13,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
@@ -39,7 +38,6 @@
 
 .leaderboard_container {
     padding: 0.5rem;
-    /*border: solid 1px #F2F2F2;*/
 }
 
 .entry {
@@ -75,18 +73,19 @@
 }
 
 .loading {
+    margin-top: 4rem;
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
 }
 .loading:after {
     content: " ";
     display: block;
-    width: 64px;
-    height: 64px;
+    width: 116px;
+    height: 116px;
     margin: 8px;
     border-radius: 50%;
-    border: 6px solid #fff;
+    border: 16px solid #fff;
     border-color: #fff transparent #fff transparent;
     animation: loading_anim 1.2s linear infinite;
 }

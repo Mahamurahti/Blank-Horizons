@@ -6,9 +6,9 @@ export default function Planet(props) {
 
     const mountRef = useRef(null)
 
-    const { segments, sphereRotation, setSphereRotation, isBackground } = props
-    const WIDTH = isBackground ? 2000 : 500
-    const HEIGHT = isBackground ? 2000 : 500
+    const { segments, sphereRotation, setSphereRotation } = props
+    const WIDTH = 500
+    const HEIGHT = 500
 
     useEffect(() => {
         const scene = new THREE.Scene()
@@ -33,24 +33,6 @@ export default function Planet(props) {
         camera.position.z = 2
         sphere.rotation.x = 0.7
         sphere.rotation.y = sphereRotation
-
-        if (isBackground) {
-            const starGeometry = new THREE.BufferGeometry()
-            const starMaterial = new THREE.PointsMaterial({
-                color: 0xffffff,
-            })
-            const starVertices = []
-            for (let i = 0; i < 10000; i++) {
-                const x = (Math.random() - 0.5) * 2000
-                const y = (Math.random() - 0.5) * 2000
-                const z = -Math.random() * 1000
-                starVertices.push(x, y ,z)
-            }
-
-            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3))
-            const stars = new THREE.Points(starGeometry, starMaterial)
-            scene.add(stars)
-        }
 
         const mouse = {
             x: null,

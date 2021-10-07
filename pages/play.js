@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
 import Footer from "../components/Footer";
 import Planet from '../components/Planet'
+import Stars from "../components/Stars"
 import words from "../words"
 
 let allWords = words()
@@ -94,7 +95,9 @@ export default function Play() {
                     back={back}
                 />
             </main>
-            <BackgroundPlanet wrongLetters={wrongLetters} />
+            <div className={styles.background}>
+                <Stars />
+            </div>
 
             <Footer />
         </div>
@@ -112,12 +115,12 @@ function Figure(props) {
         <>
             <div className={styles.figure_container}>
                 {errors <= 0 && <Planet segments={36} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 1 && <Planet segments={24} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 2 && <Planet segments={12} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 3 && <Planet segments={8} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 4 && <Planet segments={6} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 5 && <Planet segments={4} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors >= 6 && <Planet segments={2} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 1 && <Planet segments={6} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 2 && <Planet segments={5} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 3 && <Planet segments={4} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 4 && <Planet segments={3} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors === 5 && <Planet segments={2} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors >= 6 && <img src="https://i.gifer.com/YQDj.gif" alt="explosion" width={500} height={500} />}
             </div>
         </>
     )
@@ -257,63 +260,6 @@ function Results(props) {
                 {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
                 <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
                 <button className={styles.back_button} onClick={back}>&larr; Home</button>
-            </div>
-        </>
-    )
-}
-
-function BackgroundPlanet(props) {
-
-    const { wrongLetters } = props
-
-    const errors = wrongLetters.length
-    const [sphereRotation, setSphereRotation] = useState(0)
-
-    return (
-        <>
-            <div className={styles.background}>
-                {errors <= 0 && <Planet
-                    segments={36}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors === 1 && <Planet
-                    segments={24}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors === 2 && <Planet
-                    segments={12}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors === 3 && <Planet
-                    segments={8}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors === 4 && <Planet
-                    segments={6}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors === 5 && <Planet
-                    segments={4}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
-                {errors >= 6 && <Planet
-                    segments={2}
-                    sphereRotation={sphereRotation}
-                    setSphereRotation={setSphereRotation}
-                    isBackground={true}
-                />}
             </div>
         </>
     )

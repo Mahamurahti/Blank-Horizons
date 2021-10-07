@@ -3,6 +3,7 @@ import styles from '../styles/Register.module.css'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import Footer from "../components/Footer";
+import CountryDropdown from "../components/CountryDropdown";
 
 export default function Register() {
 
@@ -15,7 +16,7 @@ export default function Register() {
         password:   "",
         firstName:  "",
         lastName:   "",
-        country:    "",
+        country:    "Finland",
         terms:      false,
         picture:    "",
         picture_alt:""
@@ -162,7 +163,7 @@ function UserInfo(props) {
             console.error(e)
         }
 
-        const stringReg = /^[a-zA-ZÄÖ0-9]{1,16}/
+        const stringReg = /^[a-zA-ZÄÖ0-9]{3,16}/
         // Password: 1 lowercase, 1 uppercase, 1 number, 1 special, at least 8 characters
         const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
 
@@ -182,10 +183,12 @@ function UserInfo(props) {
             isValid = false
             setError((prev) => ({ ...prev, password: true }))
         }
+        /*
         if(!stringReg.test(user.country)) {
             isValid = false
             setError((prev) => ({ ...prev, country: true }))
         }
+        */
         if(!user.terms) {
             isValid = false
             setError((prev) => ({ ...prev, terms: true }))
@@ -213,9 +216,11 @@ function UserInfo(props) {
             case "lastName":
                 setError((prev) => ({ ...prev, lastName: false }))
                 break
+            /*
             case "country":
                 setError((prev) => ({ ...prev, country: false }))
                 break
+            */
             case "terms":
                 setError((prev) => ({ ...prev, terms: false }))
                 break
@@ -237,11 +242,21 @@ function UserInfo(props) {
                     onChange={e => handleChange(e)}
                     onInput={e => handleError(e)}
                     maxLength={16}
+                    minLength={3}
                     required />
-                {isUsernameTaken &&
-                    <p className={styles.taken}>Username taken. <br/><span>Please use a different one.</span></p>
-                }
+                <div className={styles.more_info}>
+                    ?
+                    <div className={styles.more_info_reveal}>
+                        Username must be at least 3 characters long and a maximum of 16 characters.
+                        No special characters (including spaces).
+                    </div>
+                </div>
             </div>
+            {isUsernameTaken &&
+                <div className={styles.section}>
+                    <p className={styles.red}>Username taken. <br/><span>Please use a different one.</span></p>
+                </div>
+            }
 
             <div className={styles.section}>
                 <label htmlFor="firstName">First Name</label>
@@ -254,7 +269,15 @@ function UserInfo(props) {
                     onChange={e => handleChange(e)}
                     onInput={e => handleError(e)}
                     maxLength={16}
+                    minLength={3}
                     required />
+                <div className={styles.more_info}>
+                    ?
+                    <div className={styles.more_info_reveal}>
+                        First name must be at least 3 characters long and a maximum of 16 characters.
+                        No special characters (including spaces).
+                    </div>
+                </div>
             </div>
 
             <div className={styles.section}>
@@ -268,7 +291,15 @@ function UserInfo(props) {
                     onChange={e => handleChange(e)}
                     onInput={e => handleError(e)}
                     maxLength={16}
+                    minLength={3}
                     required />
+                <div className={styles.more_info}>
+                    ?
+                    <div className={styles.more_info_reveal}>
+                        Last name must be at least 3 characters long and a maximum of 16 characters.
+                        No special characters (including spaces).
+                    </div>
+                </div>
             </div>
 
             <div className={styles.section}>
@@ -283,10 +314,18 @@ function UserInfo(props) {
                     onInput={e => handleError(e)}
                     minLength={8}
                     required />
+                <div className={styles.more_info}>
+                    ?
+                    <div className={styles.more_info_reveal}>
+                        Password must be at least 8 characters long and must include 1 uppercase letter, 1 lowercase
+                        letter, 1 special character and 1 numeric character.
+                    </div>
+                </div>
             </div>
 
             <div className={styles.section}>
                 <label htmlFor="country">Country</label>
+                {/*
                 <input
                     className={error.country ? styles.error : null}
                     type="text"
@@ -296,27 +335,40 @@ function UserInfo(props) {
                     onChange={e => handleChange(e)}
                     onInput={e => handleError(e)}
                     maxLength={16}
+                    minLength={3}
                     required />
-            </div>
-
-            <div className={styles.section + " " + styles.terms}>
-                <label htmlFor="terms">
-                    Do you accept our {" "}
-                    <a
-                        href="https://www.youtube.com/watch?v=eBGIQ7ZuuiU"
-                        target="_blank"
-                    >
-                        terms and conditions
-                    </a>?
-                </label>
-                <input
-                    type="checkbox"
-                    name="terms"
-                    value={user.terms}
+                */}
+                <select
+                    name="country"
+                    value={user.country}
                     onChange={e => handleChange(e)}
                     onInput={e => handleError(e)}
-                    required />
-                {error.terms && <p>Please read our terms and conditions.</p>}
+                    required
+                >
+                    <CountryDropdown />
+                </select>
+            </div>
+
+            <div className={styles.terms}>
+                <div className={styles.row}>
+                    <label htmlFor="terms">
+                        Do you accept our {" "}
+                        <a
+                            href="https://www.youtube.com/watch?v=eBGIQ7ZuuiU"
+                            target="_blank"
+                        >
+                            terms and conditions
+                        </a>?
+                    </label>
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        value={user.terms}
+                        onChange={e => handleChange(e)}
+                        onInput={e => handleError(e)}
+                        required />
+                </div>
+                {error.terms && <p className={styles.red}>Please read our terms and conditions.</p>}
             </div>
 
             <div className={styles.section}>

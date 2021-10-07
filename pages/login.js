@@ -87,7 +87,15 @@ export default function Login() {
                     </div>
                 </form>
 
-                <p>Not already a user? Register <Link href="/register"><a>here</a></Link>.</p>
+                <p className={styles.register}>Not already a user? Register <Link href="/register"><a>here</a></Link>.</p>
+                <p>Forgot your password? Reset password {' '}
+                    <a
+                        href="https://www.youtube.com/watch?v=eBGIQ7ZuuiU"
+                       target="_blank"
+                    >
+                        here
+                    </a>.
+                </p>
             </main>
 
             <Footer />

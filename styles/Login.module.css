@@ -81,3 +81,7 @@
 .section button:hover {
     letter-spacing: .3rem;
 }
+
+.register {
+    font-size: 1.25rem;
+}

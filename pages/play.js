@@ -8,12 +8,11 @@ import Planet from '../components/Planet'
 import Stars from "../components/Stars"
 import words from "../words"
 
-let allWords = words()
-let selectedWord = allWords[Math.floor(Math.random() * allWords.length)]
-
 export default function Play() {
 
+    const allWords = words()
     const [playable, setPlayable] = useState(true)
+    const [selectedWord, setSelectedWord] = useState(allWords[Math.floor(Math.random() * allWords.length)])
     const [correctLetters, setCorrectLetters] = useState([])
     const [wrongLetters, setWrongLetters] = useState([])
     const [showNotification, setShowNotification] = useState(false)
@@ -55,12 +54,12 @@ export default function Play() {
         setScore(12)
 
         const random = Math.floor(Math.random() * allWords.length)
-        selectedWord = allWords[random]
+        setSelectedWord(allWords[random])
     }
 
     function back() {
         const random = Math.floor(Math.random() * allWords.length)
-        selectedWord = allWords[random]
+        setSelectedWord(allWords[random])
 
         Router.push('/')
     }
@@ -111,6 +110,10 @@ function Figure(props) {
     const errors = wrongLetters.length
     const [sphereRotation, setSphereRotation] = useState(0)
 
+    useEffect(() => {
+        return () => setSphereRotation(0)
+    }, [])
+
     return (
         <>
             <div className={styles.figure_container}>
@@ -136,7 +139,7 @@ function WrongLetters(props) {
                 {wrongLetters.length > 0 && <span>Wrong&nbsp; : &nbsp;</span>}
                 {wrongLetters
                     .map((letter, index) => <span key={index}>{letter.toUpperCase()}</span>)
-                    .reduce((prev, curr) => prev === null ? [curr] : [prev, <span>,&nbsp;</span>, curr], null)}
+                    .reduce((prev, curr) => prev === null ? [curr] : [prev, <span key={Date.now()}>,&nbsp;</span>, curr], null)}
             </div>
         </>
     )
@@ -147,15 +150,13 @@ function Word(props) {
     const { selectedWord, correctLetters } = props
 
     return (
-        <>
-            <div className={styles.word}>
-                {selectedWord.split("").map((letter, index) => (
-                    <span className={styles.letter} key={index}>
-                        {correctLetters.includes(letter) ? letter.toUpperCase() : ""}
-                    </span>
-                ))}
-            </div>
-        </>
+        <div className={styles.word}>
+            {selectedWord.split("").map((letter, index) => (
+                <span className={styles.letter} key={index}>
+                    {correctLetters.includes(letter) ? letter.toUpperCase() : ""}
+                </span>
+            ))}
+        </div>
     )
 }
 
@@ -175,6 +176,9 @@ function Notification(props) {
 function Results(props) {
 
     const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain, back } = props
+
+    const [user, setUser] = useState("")
+    const [token, setToken] = useState("")
 
     const [saveState, setSaveState] = useState({
         isPassive: true,
@@ -201,9 +205,6 @@ function Results(props) {
     async function saveScore() {
         setSaveState((prev) => ({ ...prev, isPassive: false, isSaving: true }))
         try {
-            const user = JSON.parse(localStorage.getItem('user'))
-            const token = localStorage.getItem('token')
-
             const res = await fetch('api/scores', {
                 body: JSON.stringify({
                     username: user.username,
@@ -235,19 +236,25 @@ function Results(props) {
     }
 
     if(checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.WIN) {
-        finalMessage = 'Congratulations you won!'
+        if(user) finalMessage = 'Congratulations, ' + user.username + ', you won!'
+        else finalMessage = 'Congratulations you won!'
         revealedWordOrScore = 'You final score was ' + score
         playable = false
 
-        if(localStorage.getItem('token') && saveState.isPassive) saveScore()
+        if(token && saveState.isPassive) saveScore()
 
     } else if (checkIfWon(correctLetters, wrongLetters, selectedWord) === GameStatus.LOSE) {
-        finalMessage = 'Unfortunately you lost!'
+        if(user) finalMessage = 'Unfortunately, ' + user.username + ', you lost!'
+        else finalMessage = 'Unfortunately you lost!'
         revealedWordOrScore = <span>The word you were guessing was <span className={styles.reveal}>{selectedWord}</span></span>
         playable = false
     }
 
     useEffect(() => setPlayable(playable))
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem('user')))
+        setToken(localStorage.getItem('token'))
+    }, [])
 
     return (
         <>

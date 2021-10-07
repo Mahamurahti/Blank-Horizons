@@ -5,8 +5,8 @@ export default function Stars() {
 
     const mountRef = useRef(null)
 
-    const WIDTH = 2000
-    const HEIGHT = 2000
+    const WIDTH = 6000
+    const HEIGHT = 4000
 
     useEffect(() => {
         const scene = new THREE.Scene()
@@ -38,6 +38,7 @@ export default function Stars() {
 
         const animate = function () {
             requestAnimationFrame(animate)
+            stars.rotation.z += 0.0001
             renderer.render(scene, camera)
         };
 

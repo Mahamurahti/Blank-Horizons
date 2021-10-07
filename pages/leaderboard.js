@@ -8,8 +8,10 @@ export default function Leaderboard() {
 
     const [scores, setScores] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [currentUser, setCurrentUser] = useState("")
 
     useEffect(() => {
+        setCurrentUser(JSON.parse(localStorage.getItem("user"))?.username)
         async function getScores() {
             setIsLoading(true)
             try {
@@ -50,7 +52,12 @@ export default function Leaderboard() {
                         {scores.sort((a,b) => a.score < b.score ? 1 : -1).map((score, index) => (
                             <li key={index} className={styles.entry}>
                                 <img className={styles.img} src={score.picture} alt={score.picture_alt} />
-                                {score.username} <span className={styles.score}>{score.score}</span>
+                                <span className={currentUser === score.username ? styles.orange : null}>
+                                    {score.username}
+                                </span>
+                                <span className={styles.score}>
+                                    {score.score}
+                                </span>
                             </li>
                         ))}
                     </ul>

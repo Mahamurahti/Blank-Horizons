@@ -73,6 +73,10 @@
     margin-right: 1rem;
 }
 
+.orange {
+    color: #ff9a58;
+}
+
 .loading {
     margin-top: 4rem;
     display: inline-block;

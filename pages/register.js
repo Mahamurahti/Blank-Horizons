@@ -183,12 +183,6 @@ function UserInfo(props) {
             isValid = false
             setError((prev) => ({ ...prev, password: true }))
         }
-        /*
-        if(!stringReg.test(user.country)) {
-            isValid = false
-            setError((prev) => ({ ...prev, country: true }))
-        }
-        */
         if(!user.terms) {
             isValid = false
             setError((prev) => ({ ...prev, terms: true }))
@@ -216,11 +210,6 @@ function UserInfo(props) {
             case "lastName":
                 setError((prev) => ({ ...prev, lastName: false }))
                 break
-            /*
-            case "country":
-                setError((prev) => ({ ...prev, country: false }))
-                break
-            */
             case "terms":
                 setError((prev) => ({ ...prev, terms: false }))
                 break
@@ -325,19 +314,6 @@ function UserInfo(props) {
 
             <div className={styles.section}>
                 <label htmlFor="country">Country</label>
-                {/*
-                <input
-                    className={error.country ? styles.error : null}
-                    type="text"
-                    placeholder="Enter Country"
-                    name="country"
-                    value={user.country}
-                    onChange={e => handleChange(e)}
-                    onInput={e => handleError(e)}
-                    maxLength={16}
-                    minLength={3}
-                    required />
-                */}
                 <select
                     name="country"
                     value={user.country}

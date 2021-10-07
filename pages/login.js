@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Login.module.css'
-
 import { useState, useEffect } from 'react'
 import Router from "next/router";
 import Footer from "../components/Footer";
@@ -10,6 +9,7 @@ export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [wasLoginOk, setWasLoginOk] = useState(true)
 
     useEffect(() => {
         if(localStorage.getItem('token')) Router.push('/')
@@ -37,8 +37,7 @@ export default function Login() {
             localStorage.setItem("user", JSON.stringify(result.user))
             await Router.push('/')
         } else {
-            const error = await res.text()
-            alert("Login ERROR: " + error)
+            setWasLoginOk(false)
             setIsLoading(false)
         }
     }
@@ -67,7 +66,10 @@ export default function Login() {
                             placeholder="Enter Username"
                             name="username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={e => {
+                                setUsername(e.target.value)
+                                setWasLoginOk(true)
+                            }}
                             required />
                     </div>
 
@@ -78,7 +80,10 @@ export default function Login() {
                             placeholder="Enter Password"
                             name="password"
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={e => {
+                                setPassword(e.target.value)
+                                setWasLoginOk(true)
+                            }}
                             required />
                     </div>
 
@@ -86,7 +91,7 @@ export default function Login() {
                         <button type="submit">{isLoading ? "LOADING" : "Login"}</button>
                     </div>
                 </form>
-
+                {!wasLoginOk && <p className={styles.red}>Invalid credentials</p>}
                 <p className={styles.register}>Not already a user? Register <Link href="/register"><a>here</a></Link>.</p>
                 <p>Forgot your password? Reset password {' '}
                     <a

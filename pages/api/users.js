@@ -20,10 +20,10 @@ export default async (req, res) => {
                         if (err) throw err;
                         const [result] = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                         console.log(result)
-                        res.statusCode = 201
-                        res.json(username)
                     })
                 })
+                res.statusCode = 201
+                res.json(username)
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500

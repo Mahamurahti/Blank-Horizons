@@ -15,12 +15,16 @@ export default async (req, res) => {
             try {
                 sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
                 bcrypt.genSalt(saltRounds, function(err, salt) {
+                    if (err) throw err;
                     bcrypt.hash(password, salt, async function (err, hash) {
-                        await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
+                        if (err) throw err;
+                        const [result] = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
+                        console.log(result)
+                        console.log(result.insertId)
+                        res.statusCode = 201
+                        res.json(result.insertId)
                     })
                 })
-                res.statusCode = 201
-                res.json({ username })
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500

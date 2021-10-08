@@ -195,7 +195,7 @@ function UserInfo(props) {
             }
         }
 
-        const stringReg = /^[a-zA-ZÄÖ0-9]{3,16}/
+        const stringReg = /^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$/
         // Password: 1 lowercase, 1 uppercase, 1 number, 1 special, at least 8 characters
         const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
 
@@ -223,6 +223,8 @@ function UserInfo(props) {
         setIsLoading(false)
 
         if(isValid) setState((prev) => ({ ...prev, userInfo: false, userProfile: true }))
+
+        console.log(user)
     }
 
     const handleError = (e) => {
@@ -272,7 +274,6 @@ function UserInfo(props) {
                     ?
                     <div className={styles.more_info_reveal}>
                         Username must be at least 3 characters long and a maximum of 16 characters.
-                        No special characters (including spaces).
                     </div>
                 </div>
             </div>
@@ -299,7 +300,6 @@ function UserInfo(props) {
                     ?
                     <div className={styles.more_info_reveal}>
                         First name must be at least 3 characters long and a maximum of 16 characters.
-                        No special characters (including spaces).
                     </div>
                 </div>
             </div>
@@ -321,7 +321,6 @@ function UserInfo(props) {
                     ?
                     <div className={styles.more_info_reveal}>
                         Last name must be at least 3 characters long and a maximum of 16 characters.
-                        No special characters (including spaces).
                     </div>
                 </div>
             </div>
@@ -353,7 +352,6 @@ function UserInfo(props) {
                     name="country"
                     value={user.country}
                     onChange={e => handleChange(e)}
-                    onInput={e => handleError(e)}
                     required
                 >
                     <CountryDropdown />
@@ -361,7 +359,7 @@ function UserInfo(props) {
             </div>
 
             <div className={styles.section}>
-                <label htmlFor="lastName">Favourite Thing</label>
+                <label htmlFor="favouriteThing">Favourite Thing</label>
                 <input
                     type="text"
                     placeholder="Leave blank for random picture"
@@ -443,6 +441,8 @@ function UserProfile(props) {
     const handleNext = () => {
         setUser((prev) => ({ ...prev, picture: gif.src, picture_alt: gif.alt }))
         setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
+
+        console.log(user)
     }
 
     const handleBack = () => {

@@ -20,9 +20,8 @@ export default async (req, res) => {
                         if (err) throw err;
                         const [result] = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                         console.log(result)
-                        console.log(result.insertId)
                         res.statusCode = 201
-                        res.json(result.insertId)
+                        res.json(username)
                     })
                 })
             } catch (e) {

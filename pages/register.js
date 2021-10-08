@@ -30,6 +30,7 @@ export default function Register() {
     })
 
     const [registerStatus, setRegisterStatus] = useState({ isError: false, text: "" })
+    const [disable, setDisable] = useState(false)
 
     const handleChange = (e) => {
         const { target } = e
@@ -63,7 +64,7 @@ export default function Register() {
 
     const handleSubmit = async e => {
         e.preventDefault()
-
+        setDisable(true)
         const res = await fetch('api/users', {
             body: JSON.stringify({
                 username:       user.username,
@@ -118,7 +119,7 @@ export default function Register() {
                     )}
 
                     {state.userFinish && (
-                        <FinishSetUp user={user} setState={setState} />
+                        <FinishSetUp user={user} setState={setState} disable={disable} />
                     )}
 
                     {registerStatus.text.length > 0 && (
@@ -494,7 +495,7 @@ function UserProfile(props) {
 }
 
 function FinishSetUp(props) {
-    const { user, setState } = props
+    const { user, setState, disable } = props
     const password = user.password.split("").map(() => "*")
     const [buttonText, setButtonText] = useState("Register")
 
@@ -536,11 +537,24 @@ function FinishSetUp(props) {
                 </div>
             </div>
             <div className={styles.section}>
-                <button type="submit" onClick={() => {setButtonText("PROCESSING")}}>{buttonText}</button>
+                <button
+                    type="submit"
+                    onClick={() => {setButtonText("PROCESSING")}}
+                    disabled={disable}
+                >
+                    {buttonText}
+                </button>
             </div>
 
             <div className={styles.section}>
-                <button type="button" className={styles.back} onClick={handleBack}>&larr; Back</button>
+                <button
+                    type="button"
+                    className={styles.back}
+                    onClick={handleBack}
+                    disabled={disable}
+                >
+                    &larr; Back
+                </button>
             </div>
         </>
     )

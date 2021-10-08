@@ -17,6 +17,7 @@ export default function Register() {
         firstName:  "",
         lastName:   "",
         country:    "Finland",
+        favThing:   "",
         terms:      false,
         picture:    "",
         picture_alt:""
@@ -28,10 +29,10 @@ export default function Register() {
         userFinish: false
     })
 
+    const [registerStatus, setRegisterStatus] = useState({ isError: false, text: "" })
+
     const handleChange = (e) => {
         const { target } = e
-
-        console.log(user)
 
         switch (target.name) {
             case "username":
@@ -52,8 +53,11 @@ export default function Register() {
             case "terms":
                 setUser((prev) => ({ ...prev, terms: !user.terms }))
                 break
+            case "favouriteThing":
+                setUser((prev) => ({ ...prev, favThing: target.value }))
+                break
             default:
-                console.log("target.name not recognized")
+                console.log("target.name not recognized in handleChange")
         }
     }
 
@@ -78,11 +82,13 @@ export default function Register() {
 
         if (res.status === 201) {
             const result = await res.json()
-            console.log("Registration successful: " + result.username)
-            await Router.push("/login")
+            setRegisterStatus({ isError: false, text: result.username })
+            setTimeout(() => {
+                Router.push("/login")
+            }, 5000)
         } else {
             const error = await res.text()
-            alert("Registration ERROR: " + error)
+            setRegisterStatus({ isError: true, text: error })
         }
     }
 
@@ -115,6 +121,13 @@ export default function Register() {
                         <FinishSetUp user={user} setState={setState} />
                     )}
 
+                    {registerStatus.text.length > 0 && (
+                        <p className={registerStatus.isError ? styles.red : styles.green}>
+                            {registerStatus.isError ?
+                                "Registration error: " + registerStatus.text :
+                                "Registration successful for " + registerStatus.text + ". Redirecting to login page..."}
+                        </p>
+                    )}
                 </form>
             </main>
 
@@ -127,6 +140,7 @@ function UserInfo(props) {
 
     const { user, handleChange, setState } = props
     const [isUsernameTaken, setIsUsernameTaken] = useState(false)
+    const [isFavOk, setIsFavOk] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState({
         username:   false,
@@ -154,13 +168,31 @@ function UserInfo(props) {
             })
 
             if (res.status === 201) {
-                console.log("Username not taken")
+                console.log("Username is not taken.")
             } else {
                 setIsUsernameTaken(true)
                 isValid = false
             }
         } catch (e) {
             console.error(e)
+        }
+
+        // Check if something is found with favourite thing
+        if(user.favThing){
+            try {
+                const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${user.favThing}&limit=50&rating=g`
+                const res = await fetch(url)
+                const data = await res.json()
+
+                if (data.data.length >= 1) {
+                    console.log("Favourite thing found something.")
+                } else {
+                    setIsFavOk(false)
+                    isValid = false
+                }
+            } catch (e) {
+                console.error(e)
+            }
         }
 
         const stringReg = /^[a-zA-ZÄÖ0-9]{3,16}/
@@ -210,11 +242,14 @@ function UserInfo(props) {
             case "lastName":
                 setError((prev) => ({ ...prev, lastName: false }))
                 break
+            case "favouriteThing":
+                setIsFavOk(true)
+                break
             case "terms":
                 setError((prev) => ({ ...prev, terms: false }))
                 break
             default:
-                console.log("target.name not recognized")
+                console.log("target.name not recognized in handleError")
         }
     }
 
@@ -325,6 +360,31 @@ function UserInfo(props) {
                 </select>
             </div>
 
+            <div className={styles.section}>
+                <label htmlFor="lastName">Favourite Thing</label>
+                <input
+                    type="text"
+                    placeholder="Leave blank for random picture"
+                    name="favouriteThing"
+                    value={user.favThing}
+                    onChange={e => handleChange(e)}
+                    onInput={e => handleError(e)}
+                    maxLength={16} />
+                <div className={styles.more_info}>
+                    ?
+                    <div className={styles.more_info_reveal}>
+                        Your favourite thing affects which kind of selection of profile pictures you will receive.
+                        If you leave your favourite thing blank, the profile picture selection will be random.
+                        Your profile picture can be rerolled.
+                    </div>
+                </div>
+            </div>
+            {!isFavOk &&
+                <div className={styles.section}>
+                    <p>Didn't fnd anything, try something else</p>
+                </div>
+            }
+
             <div className={styles.terms}>
                 <div className={styles.row}>
                     <label htmlFor="terms">
@@ -340,6 +400,7 @@ function UserInfo(props) {
                         type="checkbox"
                         name="terms"
                         value={user.terms}
+                        checked={user.terms}
                         onChange={e => handleChange(e)}
                         onInput={e => handleError(e)}
                         required />
@@ -356,7 +417,7 @@ function UserInfo(props) {
 
 function UserProfile(props) {
 
-    const { setUser, setState } = props
+    const { user, setUser, setState } = props
     // Array of fetched GIFs
     const [gifs, setGifs] = useState([])
     // Currently active GIF
@@ -392,7 +453,7 @@ function UserProfile(props) {
         setIsLoading(true)
         async function fetchData() {
             try {
-                const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=funny&limit=50&rating=r`
+                const url = `https://api.giphy.com/v1/gifs/${user.favThing ? "search" : "trending"}?api_key=${process.env.GIPHY_API_KEY}${user.favThing ? "&q=" + user.favThing : ""}&limit=50&rating=g`
                 const response = await fetch(url)
                 const data = await response.json()
                 setGifs(data.data)
@@ -434,14 +495,9 @@ function UserProfile(props) {
 function FinishSetUp(props) {
     const { user, setState } = props
     const password = user.password.split("").map(() => "*")
-
     const [buttonText, setButtonText] = useState("Register")
 
-    useEffect(() => console.log(user), [])
-
-    const handleBack = () => {
-        setState((prev) => ({ ...prev, userProfile: true, userFinish: false }))
-    }
+    const handleBack = () => setState((prev) => ({ ...prev, userProfile: true, userFinish: false }))
 
     return (
         <>

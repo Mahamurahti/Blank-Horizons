@@ -42,8 +42,6 @@ export default function Login() {
         }
     }
 
-    const printUser = () => console.log(username + " " + password)
-
     return (
         <div className={styles.container}>
             <Head>
@@ -58,7 +56,7 @@ export default function Login() {
                     Login
                 </h1>
 
-                <form className={styles.form} onChange={printUser} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.section}>
                         <label htmlFor="username">Username</label>
                         <input

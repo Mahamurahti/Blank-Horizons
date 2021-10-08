@@ -273,7 +273,8 @@ function UserInfo(props) {
                 <div className={styles.more_info}>
                     ?
                     <div className={styles.more_info_reveal}>
-                        Username must be at least 3 characters long and a maximum of 16 characters.
+                        Username must be at least 3 characters long and a maximum of 16 characters. This name will be
+                        used to login to your account.
                     </div>
                 </div>
             </div>

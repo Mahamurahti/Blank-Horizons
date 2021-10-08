@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from "next/link";
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.sass'
 import { useState, useEffect } from 'react'
 import Footer from "../components/Footer";
 
@@ -19,15 +19,15 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className="container">
       <Head>
         <title>Blank Horizons</title>
         <meta name="description" content="Welcome to Blank Horizons!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+      <main className="main">
+        <h1 className="title">
           {loggedInUser === null ?
               <span>Welcome to <span className={styles.dashed}>Blank Horizons!</span></span> :
               <span>Welcome <span className={styles.dashed}>{loggedInUser.username}!</span></span>
@@ -35,7 +35,7 @@ export default function Home() {
         </h1>
 
         {loggedInUser === null ?
-            <p className={styles.description}>
+            <p className="description">
               Play Hangman and compete against others!
             </p> :
             <img className={styles.img} src={loggedInUser.picture} alt={loggedInUser.picture_alt} />

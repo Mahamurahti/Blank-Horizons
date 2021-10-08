@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Leaderboard.module.css'
+import styles from '../styles/Leaderboard.module.sass'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
 import Footer from "../components/Footer";
@@ -32,7 +32,7 @@ export default function Leaderboard() {
     }, [])
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Head>
                 <title>Blank Horizons - Leaderboard</title>
                 <meta name="description" content="Leaderboard of Hangman" />
@@ -40,8 +40,8 @@ export default function Leaderboard() {
             </Head>
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
-            <main className={styles.main}>
-                <h1 className={styles.title}>
+            <main className="main">
+                <h1 className="title">
                     Leaderboard
                 </h1>
 

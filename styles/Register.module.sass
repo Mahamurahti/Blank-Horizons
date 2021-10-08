@@ -1,0 +1,116 @@
+/*************************************************************************************/
+//  Author: Eric Keränen
+//  Register Page Styles
+//  Version: 1.0
+/*************************************************************************************/
+
+.form
+    display: inherit
+    flex-direction: inherit
+    justify-content: inherit
+    align-items: inherit
+    padding: 0.5rem
+
+.section
+    display: inherit
+    flex-direction: inherit
+    width: 300px
+    position: relative
+    label
+        text-align: left
+        padding: 1.25rem 0
+        font-size: 1.25rem
+        width: 600px
+    input,
+    button,
+    select
+        height: 2.5rem
+        font-size: 1rem
+        padding: 0.5rem
+        background: transparent
+        color: #F2F2F2
+        border: solid 1px #F2F2F2
+        transition: .2s ease-in-out
+        &:hover
+            background: #262626
+        &:focus
+            outline: none
+            background: #F2F2F2
+            color: #121212
+    button
+        margin: 1.25rem 0
+        font-family: 'Fira Sans', sans-serif
+        &:hover
+            letter-spacing: .3rem
+    .back
+        border: none
+    .error
+        border: solid 2px #FF4433
+
+.terms
+    display: flex
+    flex-direction: column
+    width: auto
+    font-size: 1.25rem
+    margin: 2.5rem 0 1.25rem
+    input[type="checkbox"]
+        width: 1.4rem
+        height: 1.4rem
+
+.img
+    width: 500px
+    height: 500px
+
+.summary
+    display: flex
+
+.user_info
+    display: flex
+    flex-direction: column
+    margin: 0 2rem
+    height: 500px
+
+.more_info
+    position: absolute
+    display: flex
+    align-items: center
+    justify-content: center
+    right: 5px
+    bottom: 5px
+    width: 30px
+    height: 30px
+    background: rgba(0, 0, 0, .2)
+    transition: .2s ease-in-out
+    &:hover
+        background: rgba(0, 0, 0, .8)
+    &:hover > .more_info_reveal
+        visibility: visible
+        opacity: 1
+    .more_info_reveal
+        visibility: hidden
+        opacity: 0
+        padding: 5px
+        position: absolute
+        right: -410px
+        width: 400px
+        border: 1px solid #F2F2F2
+        transition: .2s ease-in-out
+
+.row
+    display: inherit
+    align-items: center
+
+.green
+    color: #6bff6b
+
+.red
+    color: #FF4433
+    span
+        color: #F2F2F2
+
+.bold
+    font-weight: bold
+
+.underline
+    width: 300px
+    border-bottom: 1px solid #F2F2F2

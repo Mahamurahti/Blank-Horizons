@@ -12,7 +12,7 @@ export default function Footer() {
                 <Image src="/giphy_long.png" alt="Giphy Logo" width={182} height={26} />
               </span>
             </a>
-            {' '}&{' '}
+            |
             <a
                 href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
                 target="_blank"

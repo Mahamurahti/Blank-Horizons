@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Play.module.css'
+import styles from '../styles/Play.module.sass'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
@@ -65,7 +65,7 @@ export default function Play() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Head>
                 <title>Blank Horizons - Play</title>
                 <meta name="description" content="Play Hangman!" />
@@ -73,8 +73,8 @@ export default function Play() {
             </Head>
             <button className="home_button" onClick={back}>&larr;</button>
 
-            <main className={styles.main}>
-                <h1 className={styles.title}>
+            <main className="main">
+                <h1 className="title">
                     Score : {score}
                 </h1>
 

@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Register.module.css'
+import styles from '../styles/Register.module.sass'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import Footer from "../components/Footer";
@@ -94,7 +94,7 @@ export default function Register() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Head>
                 <title>Blank Horizons - Register</title>
                 <meta name="description" content="Register an account" />
@@ -102,9 +102,9 @@ export default function Register() {
             </Head>
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
-            <main className={styles.main}>
+            <main className="main">
 
-                <h1 className={styles.title}>
+                <h1 className="title">
                     Register
                 </h1>
 

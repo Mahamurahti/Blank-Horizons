@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import styles from '../styles/Login.module.css'
+import styles from '../styles/Login.module.sass'
 import { useState, useEffect } from 'react'
 import Router from "next/router";
 import Footer from "../components/Footer";
@@ -43,7 +43,7 @@ export default function Login() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Head>
                 <title>Blank Horizons - Login</title>
                 <meta name="description" content="Leaderboard of Hangman" />
@@ -51,8 +51,8 @@ export default function Login() {
             </Head>
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
-            <main className={styles.main}>
-                <h1 className={styles.title}>
+            <main className="main">
+                <h1 className="title">
                     Login
                 </h1>
 

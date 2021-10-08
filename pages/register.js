@@ -82,8 +82,7 @@ export default function Register() {
 
         if (res.status === 201) {
             const result = await res.json()
-            console.log("res.json(): " + result)
-            setRegisterStatus({ isError: false, text: result })
+            setRegisterStatus({ isError: false, text: result.username })
             setTimeout(() => {
                 Router.push("/login")
             }, 5000)

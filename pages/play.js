@@ -95,7 +95,7 @@ export default function Play() {
                 />
             </main>
             <div className={styles.background}>
-                {playable && <Stars />}
+                <Stars />
             </div>
 
             <Footer />

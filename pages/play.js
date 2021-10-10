@@ -163,7 +163,7 @@ function Notification(props) {
     return (
         <>
             <div className={showNotification ? styles.notification_container : styles.hide}>
-                <p>You have already guessed this letter</p>
+                <span className={styles.info_sign}>i</span><p>You have already guessed this letter</p>
             </div>
         </>
     )

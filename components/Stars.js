@@ -38,7 +38,7 @@ export default function Stars() {
 
         const animate = function () {
             requestAnimationFrame(animate)
-            stars.rotation.z += 0.0001
+            //stars.rotation.z += 0.0001
             renderer.render(scene, camera)
         };
 

@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { showNotification as show, checkIfWon, GameStatus } from "../helpers/helpers";
 import Footer from "../components/Footer";
 import Planet from '../components/Planet'
-import Stars from "../components/Stars"
 import words from "../words"
 
 export default function Play() {
@@ -34,13 +33,13 @@ export default function Play() {
                     if(!wrongLetters.includes(letter)) {
                         setWrongLetters((prev) => [ ...prev, letter])
                         setScore((prev) => prev - 2)
-                        if(score <= 0) setScore(0)
                     } else {
                         show(setShowNotification)
                     }
                 }
             }
         }
+        if(score <= 0) setScore(0)
         window.addEventListener('keydown', handleKeydown)
 
         return () => window.removeEventListener('keydown', handleKeydown)
@@ -94,9 +93,6 @@ export default function Play() {
                     back={back}
                 />
             </main>
-            <div className={styles.background}>
-                <Stars />
-            </div>
 
             <Footer />
         </div>
@@ -265,7 +261,10 @@ function Results(props) {
                 {saveState.isSaved && <p className={styles.green}>Score saved to database</p>}
                 {saveState.isError && <p className={styles.red}>An error occurred while saving score</p>}
                 {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
-                <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
+                {saveState.isSaving ?
+                    <button className={styles.loading_button}><span /><span /><span /></button> :
+                    <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
+                }
                 <button className={styles.back_button} onClick={back}>&larr; Home</button>
             </div>
         </>

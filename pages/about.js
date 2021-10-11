@@ -21,7 +21,9 @@ export default function About() {
                 <div className={styles.about_container}>
                     <p>
                         Blank Horizons was created as a final project for the first period of the third year in Metropolia
-                        UAS by Eric Keränen.
+                        UAS by Eric Keränen. <br/><br/>
+                        The game is only playable on desktop and has no support for mobile. <br/> Play using your {' '}
+                        <span className={styles.bold_underline}>keyboard</span>.
                     </p>
                     <h2>Rules</h2>
                     <section>
@@ -67,19 +69,22 @@ export default function About() {
                     <section>
                         <ul className={styles.list}>
                             <li>
-                                <a href="https://nextjs.org/" target="_blank">Next.js / React</a> as the framework
+                                <a href="https://nextjs.org/" target="_blank">Next.js / React</a> - framework
                             </li>
                             <li>
-                                <a href="https://vercel.com/dashboard" target="_blank">Vercel</a> as the production deployment
+                                <a href="https://sass-lang.com/" target="_blank">Sass</a> - styling
                             </li>
                             <li>
-                                <a href="https://planetscale.com/" target="_blank">PlanetScale</a> as the database
+                                <a href="https://vercel.com/dashboard" target="_blank">Vercel</a> - production deployment
                             </li>
                             <li>
-                                <a href="https://github.com/" target="_blank">Git</a> as the version control
+                                <a href="https://planetscale.com/" target="_blank">PlanetScale</a> - database
                             </li>
                             <li>
-                                <a href="https://threejs.org/" target="_blank">Three.js</a> as the 3D computer graphic library
+                                <a href="https://github.com/" target="_blank">Git</a> - version control
+                            </li>
+                            <li>
+                                <a href="https://threejs.org/" target="_blank">Three.js</a> - 3D computer graphic library
                             </li>
                         </ul>
                     </section>

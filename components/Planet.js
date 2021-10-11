@@ -15,16 +15,35 @@ export default function Planet(props) {
         const camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000)
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
 
+        const light = new THREE.DirectionalLight( 0xffffff );
+        light.position.set( 2.75, 1.75, 1.5 ).normalize();
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040))
+
         renderer.setPixelRatio(window.devicePixelRatio)
         renderer.setSize(WIDTH, HEIGHT)
 
         mountRef.current.appendChild(renderer.domElement)
 
         const geometry = new THREE.SphereGeometry(1, segments, segments)
-        const material = new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load('/earth.jpg')
+        const material = new THREE.MeshPhongMaterial({
+            map: new THREE.TextureLoader().load("/earth.jpg"),
+            bumpMap: new THREE.TextureLoader().load("/bump_map.jpg"),
+            bumpScale: 0.05,
+            specularMap: new THREE.TextureLoader().load("/specular_map.png"),
+            specular: new THREE.Color("grey"),
+
         });
         const sphere = new THREE.Mesh(geometry, material)
+
+        const cloudGeometry = new THREE.SphereGeometry(1.03, segments, segments)
+        const cloudMaterial = new THREE.MeshPhongMaterial({
+            map: new THREE.TextureLoader().load("/cloud_map.png"),
+            transparent: true
+
+        });
+        const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial)
+        sphere.add(clouds)
 
         const group = new THREE.Group()
         group.add(sphere)

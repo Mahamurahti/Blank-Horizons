@@ -113,12 +113,36 @@ function Figure(props) {
     return (
         <>
             <div className={styles.figure_container}>
-                {errors <= 0 && <Planet segments={36} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 1 && <Planet segments={6} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 2 && <Planet segments={5} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 3 && <Planet segments={4} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 4 && <Planet segments={3} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
-                {errors === 5 && <Planet segments={2} sphereRotation={sphereRotation} setSphereRotation={setSphereRotation} />}
+                {errors <= 0 && <Planet
+                    segments={36}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
+                {errors === 1 && <Planet
+                    segments={6}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
+                {errors === 2 && <Planet
+                    segments={5}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
+                {errors === 3 && <Planet
+                    segments={4}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
+                {errors === 4 && <Planet
+                    segments={3}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
+                {errors === 5 && <Planet
+                    segments={2}
+                    sphereRotation={sphereRotation}
+                    setSphereRotation={setSphereRotation}
+                />}
                 {errors >= 6 && <img src="https://i.gifer.com/YQDj.gif" alt="explosion" width={500} height={500} />}
             </div>
         </>

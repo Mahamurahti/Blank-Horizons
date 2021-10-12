@@ -64,7 +64,7 @@ export default function Home() {
           {loggedInUser === null ?
               <Link href="/login">
                 <a className={styles.card}>
-                  <h2>Login &rarr;</h2>
+                  <h2>Login / Register &rarr;</h2>
                   <p>Log in to track your score in the leaderboard!</p>
                 </a>
               </Link> :

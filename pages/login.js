@@ -45,7 +45,9 @@ export default function Login() {
     return (
         <div className="container">
             <Header title="Blank Horizons - Login" description="Login to Blank Horizons and compete" />
-            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/')}>
+                &larr;<span>&nbsp;Back to Home</span>
+            </button>
 
             <main className="main">
                 <h1 className="title">

@@ -7,7 +7,9 @@ export default function About() {
     return (
         <div className="container">
             <Header title="Blank Horizons - About" description="About the site Blank Horizons" />
-            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/')}>
+                &larr;<span>&nbsp;Back to Home</span>
+            </button>
 
             <main className="main">
                 <h1 className="title">
@@ -53,13 +55,13 @@ export default function About() {
                     </section>
                     <h2>Vision</h2>
                     <p>
-                        The vision of the project was to make a simple game, where player can compete against each other.
+                        The vision of the project was to make a simple game, where players can compete against each other.
                         The game needed to be simple, since there was only two and a half weeks time to get the project
                         ready. As the game I decided to make a Hangman game, since it was relatively simple to make
                         and can be addicting. I also wanted a theme for the website and decided to go with a space theme.
                         The name "Blank Horizons" was derived from the blank spaces which need to be filled in the
-                        Hangman game and from a planets horizon. Originally it was planned to place the blank spaces
-                        along a planets horizon, but it proved hard to achieve.
+                        Hangman game and from planets horizon. Originally it was planned to place the blank spaces
+                        along a horizon, but it proved hard to achieve.
                     </p>
                     <h2>Technologies used</h2>
                     <section>

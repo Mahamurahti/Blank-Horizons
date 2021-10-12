@@ -96,7 +96,9 @@ export default function Register() {
     return (
         <div className="container">
             <Header title="Blank Horizons - Register" description="Register an account" />
-            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/login')}>
+                &larr;<span>&nbsp;Back to Login</span>
+            </button>
 
             <main className="main">
 

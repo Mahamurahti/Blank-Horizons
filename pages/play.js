@@ -56,17 +56,26 @@ export default function Play() {
         setSelectedWord(allWords[random])
     }
 
-    function back() {
+    function backToHome() {
         const random = Math.floor(Math.random() * allWords.length)
         setSelectedWord(allWords[random])
 
         Router.push('/')
     }
 
+    function backToLeaderboard() {
+        const random = Math.floor(Math.random() * allWords.length)
+        setSelectedWord(allWords[random])
+
+        Router.push('/leaderboard')
+    }
+
     return (
         <div className="container">
             <Header title="Blank Horizons - Play" description="Play Hangman!" />
-            <button className="home_button" onClick={back}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/')}>
+                &larr;<span>&nbsp;Back to Home</span>
+            </button>
 
             <main className="main">
                 <h1 className="title">
@@ -86,7 +95,8 @@ export default function Play() {
                     score={score}
                     setPlayable={setPlayable}
                     playAgain={playAgain}
-                    back={back}
+                    back={backToHome}
+                    leaderboard={backToLeaderboard}
                 />
             </main>
 
@@ -191,7 +201,7 @@ function Notification(props) {
 
 function Results(props) {
 
-    const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain, back } = props
+    const { correctLetters, wrongLetters, score, selectedWord, setPlayable, playAgain, back, leaderboard } = props
 
     const [user, setUser] = useState("")
     const [token, setToken] = useState("")
@@ -282,10 +292,18 @@ function Results(props) {
                 {saveState.isError && <p className={styles.red}>An error occurred while saving score</p>}
                 {saveState.isUnauthorized && <p className={styles.red}>Your login has expired. Please login again.</p>}
                 {saveState.isSaving ?
-                    <button className={styles.loading_button}><span /><span /><span /></button> :
-                    <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
+                    <>
+                        <button className={styles.loading_button}><span /><span /><span /></button>
+                        <button className={styles.loading_button}><span /><span /><span /></button>
+                        <button className={styles.loading_button}><span /><span /><span /></button>
+                    </>
+                    :
+                    <>
+                        <button className={styles.play_button} onClick={reset}>Play Again &rarr;</button>
+                        <button className={styles.back_button} onClick={leaderboard}>&larr; Leaderboard</button>
+                        <button className={styles.back_button} onClick={back}>&larr; Home</button>
+                    </>
                 }
-                <button className={styles.back_button} onClick={back}>&larr; Home</button>
             </div>
         </>
     )

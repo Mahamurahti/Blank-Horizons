@@ -34,7 +34,9 @@ export default function Leaderboard() {
     return (
         <div className="container">
             <Header title="Blank Horizons - Leaderboard" description="Leaderboard of Blank Horizons" />
-            <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
+            <button className="home_button" onClick={() => Router.push('/')}>
+                &larr;<span>&nbsp;Back to Home</span>
+            </button>
 
             <main className="main">
                 <h1 className="title">

@@ -57,16 +57,33 @@ a
   text-align: center
 
 .home_button
+  display: flex
+  align-items: center
   position: fixed
   top: 2rem
   left: 2rem
   background: none
-  border: 1px solid #F2F2F2
   color: #F2F2F2
-  height: 2rem
-  width: 2rem
-  font-size: 1rem
+  border: 1px solid #F2F2F2
+  font-size: 2rem
+  font-family: 'Fira Sans', sans-serif
   z-index: 20
+  padding: 5px
+  height: 3rem
+  transition: .2s ease-in-out
+  span
+    max-width: 0
+    display: inline-block
+    white-space: nowrap
+    overflow: hidden
+    font-size: 1rem
+    transition: max-width .6s ease-in-out
+  &:hover span
+    max-width: 10rem
+  &:hover
+    background: #F2F2F2
+    color: #191919
+
 
 .footer
   width: 100%

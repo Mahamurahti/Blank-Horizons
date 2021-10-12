@@ -9,7 +9,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
             >
               <span className="logo">
-                <Image src="/giphy_long.png" alt="Giphy Logo" width={182} height={26} />
+                <Image src="/giphy.png" alt="Giphy Logo" width={182} height={26} />
               </span>
             </a>
             |

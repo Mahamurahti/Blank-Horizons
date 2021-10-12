@@ -1,16 +1,12 @@
-import Head from 'next/head'
 import styles from '../styles/About.module.sass'
 import Router from "next/router";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function About() {
     return (
         <div className="container">
-            <Head>
-                <title>Blank Horizons - About</title>
-                <meta name="description" content="About the site Blank Horizons" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header title="Blank Horizons - About" description="About the site Blank Horizons" />
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
             <main className="main">

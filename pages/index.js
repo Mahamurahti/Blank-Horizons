@@ -1,8 +1,8 @@
-import Head from 'next/head'
 import Link from "next/link";
 import styles from '../styles/Home.module.sass'
 import { useState, useEffect } from 'react'
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function Home() {
 
@@ -20,19 +20,17 @@ export default function Home() {
 
   return (
     <div className="container">
-      <Head>
-        <title>Blank Horizons</title>
-        <meta name="description" content="Welcome to Blank Horizons!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Header title="Blank Horizons" description="Welcome to Blank Horizons!" />
 
       <main className="main">
         <h1 className="title">
           {loggedInUser === null ?
-              <span>Welcome to <span className={styles.dashed}>Blank Horizons!</span></span> :
+              <span>Welcome t<img src="/horizon-logo.png" alt="Blank Horizons logo" width={100} height={100}/>
+              <span className={styles.dashed}>Blank Horizons!</span></span> :
               <span>Welcome <span className={styles.dashed}>{loggedInUser.username}!</span></span>
           }
         </h1>
+
 
         {loggedInUser === null ?
             <p className="description">

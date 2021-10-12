@@ -1,9 +1,9 @@
-import Head from 'next/head'
 import styles from '../styles/Register.module.sass'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import Footer from "../components/Footer";
 import CountryDropdown from "../components/CountryDropdown";
+import Header from "../components/Header";
 
 export default function Register() {
 
@@ -95,11 +95,7 @@ export default function Register() {
 
     return (
         <div className="container">
-            <Head>
-                <title>Blank Horizons - Register</title>
-                <meta name="description" content="Register an account" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header title="Blank Horizons - Register" description="Register an account" />
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
             <main className="main">

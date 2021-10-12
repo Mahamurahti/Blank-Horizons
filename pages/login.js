@@ -1,9 +1,9 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Login.module.sass'
 import { useState, useEffect } from 'react'
 import Router from "next/router";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function Login() {
     const [username, setUsername] = useState("")
@@ -44,11 +44,7 @@ export default function Login() {
 
     return (
         <div className="container">
-            <Head>
-                <title>Blank Horizons - Login</title>
-                <meta name="description" content="Leaderboard of Hangman" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header title="Blank Horizons - Login" description="Login to Blank Horizons and compete" />
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
             <main className="main">

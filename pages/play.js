@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import styles from '../styles/Play.module.sass'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
@@ -6,6 +5,7 @@ import { showNotification as show, checkIfWon, GameStatus } from "../helpers/hel
 import Footer from "../components/Footer";
 import Planet from '../components/Planet'
 import words from "../words"
+import Header from "../components/Header";
 
 export default function Play() {
 
@@ -65,11 +65,7 @@ export default function Play() {
 
     return (
         <div className="container">
-            <Head>
-                <title>Blank Horizons - Play</title>
-                <meta name="description" content="Play Hangman!" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header title="Blank Horizons - Play" description="Play Hangman!" />
             <button className="home_button" onClick={back}>&larr;</button>
 
             <main className="main">

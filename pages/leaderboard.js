@@ -1,8 +1,8 @@
-import Head from 'next/head'
 import styles from '../styles/Leaderboard.module.sass'
 import Router from "next/router";
 import { useState, useEffect } from 'react'
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function Leaderboard() {
 
@@ -33,11 +33,7 @@ export default function Leaderboard() {
 
     return (
         <div className="container">
-            <Head>
-                <title>Blank Horizons - Leaderboard</title>
-                <meta name="description" content="Leaderboard of Hangman" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header title="Blank Horizons - Leaderboard" description="Leaderboard of Blank Horizons" />
             <button className="home_button" onClick={() => Router.push('/')}>&larr;</button>
 
             <main className="main">

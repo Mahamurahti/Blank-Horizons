@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 const conn = new PSDB('main')
 
 export default async (req, res) => {
-    const saltRounds = 10
     const {
         body: { username, password, first_name, last_name, country, picture, picture_alt },
         method
@@ -13,11 +12,10 @@ export default async (req, res) => {
     switch (method) {
         case 'POST':
             try {
+                const saltRounds = 10
                 sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
-                await bcrypt.genSalt(saltRounds, async function(err, salt) {
-                    await bcrypt.hash(password, salt, async function (err, hash) {
-                        await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
-                    })
+                await bcrypt.hash(password, saltRounds, function (err, hash) {
+                    conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                 })
                 res.statusCode = 201
                 res.json({ username })

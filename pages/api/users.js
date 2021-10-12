@@ -15,9 +15,9 @@ export default async (req, res) => {
                 const saltRounds = 10
                 sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
                 const hash = await bcrypt.hashSync(password, saltRounds);
-                const result = await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
+                await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                 res.statusCode = 201
-                res.json({ result })
+                res.json({ username })
             } catch (e) {
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500

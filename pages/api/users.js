@@ -14,8 +14,8 @@ export default async (req, res) => {
         case 'POST':
             try {
                 sql = `INSERT INTO users (username, password, first_name, last_name, country, picture, picture_alt) VALUES (?, ?, ?, ?, ?, ?, ?)`
-                bcrypt.genSalt(saltRounds, function(err, salt) {
-                    bcrypt.hash(password, salt, async function (err, hash) {
+                await bcrypt.genSalt(saltRounds, async function(err, salt) {
+                    await bcrypt.hash(password, salt, async function (err, hash) {
                         await conn.query(sql, [username, hash, first_name, last_name, country, picture, picture_alt])
                     })
                 })

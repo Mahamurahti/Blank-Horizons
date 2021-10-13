@@ -244,15 +244,11 @@ function Results(props) {
                 method: 'POST'
             })
             const data = await res
-            console.log(data)
             if(data.status === 401 || data.status === 403) {
-                console.log('Unauthorized')
                 setSaveState((prev) => ({ ...prev, isSaving: false, isUnauthorized: true }))
             }else if(data.status === 500) {
-                console.log('Database error')
                 setSaveState((prev) => ({ ...prev, isSaving: false, isError: true }))
             } else {
-                console.log('Authorized')
                 setSaveState((prev) => ({ ...prev, isSaving: false, isSaved: true }))
             }
         } catch (error) {

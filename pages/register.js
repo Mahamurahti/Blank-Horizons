@@ -167,7 +167,7 @@ function UserInfo(props) {
             })
 
             if (res.status === 201) {
-                console.log("Username is not taken.")
+                console.log("Username is ok")
             } else {
                 setIsUsernameTaken(true)
                 isValid = false
@@ -184,7 +184,7 @@ function UserInfo(props) {
                 const data = await res.json()
 
                 if (data.data.length >= 1) {
-                    console.log("Favourite thing found something.")
+                    console.log("Favourite thing is ok")
                 } else {
                     setIsFavOk(false)
                     isValid = false
@@ -222,8 +222,6 @@ function UserInfo(props) {
         setIsLoading(false)
 
         if(isValid) setState((prev) => ({ ...prev, userInfo: false, userProfile: true }))
-
-        console.log(user)
     }
 
     const handleError = (e) => {
@@ -434,16 +432,12 @@ function UserProfile(props) {
             })
         } catch (error) {
             console.error(error)
-        } finally {
-            console.log(gif)
         }
     }
 
     const handleNext = () => {
         setUser((prev) => ({ ...prev, picture: gif.src, picture_alt: gif.alt }))
         setState((prev) => ({ ...prev, userProfile: false, userFinish: true }))
-
-        console.log(user)
     }
 
     const handleBack = () => {

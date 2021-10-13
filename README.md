@@ -17,15 +17,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - Play Hangman in a space themed environment
 
-[![Game screen of Blank Horizons](https://i.gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811.gif)](https://gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811)
+[![Game screen of Blank Horizons](https://i.gyazo.com/914d139b8234504a9648be804b80f16e.gif)](https://gyazo.com/914d139b8234504a9648be804b80f16e)
 
 - Register and login to you own user
 
-[![Login in Blank Horizons](https://i.gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0.gif)](https://gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0)
+[![Login in Blank Horizons](https://i.gyazo.com/926ccc5a99fd3d5559877ca188e04136.gif)](https://gyazo.com/926ccc5a99fd3d5559877ca188e04136)
 
 - Compete against other players in the leaderboards
 
-[![Leaderboard of Blank Horizons](https://i.gyazo.com/eaa472ac260814869fedd99c8d6bee9b.gif)](https://gyazo.com/eaa472ac260814869fedd99c8d6bee9b)
+[![Leaderboard of Blank Horizons](https://i.gyazo.com/6920e8bdb407b37f023ce5abc840e56d.gif)](https://gyazo.com/6920e8bdb407b37f023ce5abc840e56d)
 
 # Project Goals
 

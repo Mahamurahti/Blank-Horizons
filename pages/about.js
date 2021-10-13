@@ -34,7 +34,9 @@ export default function About() {
                                 Each round you start with 12 points and lose 2 points for every wrong letter guessed.
                             </li>
                             <li>
-                                You have a total of 6 tries to guess the word.
+                                You have a total of 6 tries to guess the word. Earth in the middle of the play screen
+                                will keep losing its segments, going from a sphere to a triangle. This indicates how many
+                                tries you have left.
                             </li>
                             <li>
                                 If the word contains multiples of the same letter and the letter is guessed, all the
@@ -42,10 +44,11 @@ export default function About() {
                             </li>
                             <li>
                                 If you guess the word with less than 6 tries, you win and gain the points you were left
-                                with.
+                                with. Earth will be saved!
                             </li>
                             <li>
-                                If you can't guess the word in 6 tries, you lose and gain nothing.
+                                If you can't guess the word in 6 tries, you lose and gain nothing. This will also result
+                                in Earth exploding.
                             </li>
                             <li>
                                 All won points will be added to your account if you're logged in. No points can be lost

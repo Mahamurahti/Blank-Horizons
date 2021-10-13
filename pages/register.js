@@ -361,6 +361,7 @@ function UserInfo(props) {
             <div className={styles.section}>
                 <label htmlFor="favouriteThing">Favourite Thing</label>
                 <input
+                    className={!isFavOk ? styles.error : null}
                     type="text"
                     placeholder="Leave blank for random picture"
                     name="favouriteThing"
@@ -379,7 +380,7 @@ function UserInfo(props) {
             </div>
             {!isFavOk &&
                 <div className={styles.section}>
-                    <p>Didn't fnd anything, try something else</p>
+                    <p className={styles.red}>Didn't fnd anything, try something else</p>
                 </div>
             }
 

@@ -17,15 +17,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - Play Hangman in a space themed environment
 
-[![Game screen](https://i.gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811.gif)](https://gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811)
+[![Game screen of Blank Horizons](https://i.gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811.gif)](https://gyazo.com/1b8197b8d3feaf41f9b9ac382c94f811)
 
 - Register and login to you own user
 
-[![Logged in user](https://i.gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0.gif)](https://gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0)
+[![Login in Blank Horizons](https://i.gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0.gif)](https://gyazo.com/2044067d33e05c601ae3b6f7ab9be8f0)
 
 - Compete against other players in the leaderboards
 
-[![Leaderboard](https://i.gyazo.com/eaa472ac260814869fedd99c8d6bee9b.gif)](https://gyazo.com/eaa472ac260814869fedd99c8d6bee9b)
+[![Leaderboard of Blank Horizons](https://i.gyazo.com/eaa472ac260814869fedd99c8d6bee9b.gif)](https://gyazo.com/eaa472ac260814869fedd99c8d6bee9b)
 
 # Project Goals
 
@@ -99,7 +99,7 @@ Tokens are needed if the user want to compete in the leaderboard. Saving your sc
 token. Without a token your score cannot be saved into the database. Token is checked when the user is logged in and
 wins a round of Hangman. The victory screen post-game shows was the score saved or not (depends on token validity).
 
-[![Access token](https://i.gyazo.com/316e8a15398ce87b61a6f101b18b2513.gif)](https://gyazo.com/316e8a15398ce87b61a6f101b18b2513)
+[![Access token when logging in](https://i.gyazo.com/316e8a15398ce87b61a6f101b18b2513.gif)](https://gyazo.com/316e8a15398ce87b61a6f101b18b2513)
 
 ## Technology stack
 

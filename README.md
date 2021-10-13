@@ -78,7 +78,8 @@ Max and min lengths of the fields are determined on the HTML tag.
 Regular expression for these fields: `/^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$/`.
 
 Password must contain 1 lowercase, 1 uppercase, 1 number, 1 special and at least 8 characters.
-Regular expression for a password: `/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/`
+Regular expression for a password: `/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/`.
+Passwords will be ***hashed*** when stored into the database.
 
 [![Validation of password](https://i.gyazo.com/4770feed6de3251deb2c5a9dccef5b1a.gif)](https://gyazo.com/4770feed6de3251deb2c5a9dccef5b1a)
 

@@ -81,7 +81,8 @@ Example return when `statusCode = 400` (username taken):
 
 ### `api/users`
 
-Accepts `POST` and `GET` requests. `POST` needs a username and score on the body.
+Accepts `POST` and `GET` requests. `POST` needs username, password, first name, last name, country, picture and
+picture_alt on the body.
 
 Example return when `POST` and `statusCode = 201` (registration was successful):
 
@@ -122,7 +123,7 @@ Example return when `GET` and `statusCode = 200`:
 
 ### Applies to all
 
-If something goes wrong, the endpoint always returns the following with a `statusCode = 500`:
+If something goes wrong, the endpoint always returns the following with `statusCode = 500`:
 
 ```json
 {

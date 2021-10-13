@@ -17,7 +17,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - Play Hangman in a space themed environment
 
-[![Game screen of Blank Horizons](https://i.gyazo.com/914d139b8234504a9648be804b80f16e.gif)](https://gyazo.com/914d139b8234504a9648be804b80f16e)
+[![Game screen of Blank Horizons](https://i.gyazo.com/b388a7d8cbb9923ecc9057fbc3df18d2.gif)](https://gyazo.com/b388a7d8cbb9923ecc9057fbc3df18d2)
 
 - Register and login to you own user
 

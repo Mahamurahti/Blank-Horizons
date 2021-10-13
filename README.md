@@ -96,7 +96,7 @@ Terms and conditions must be checked.
 Upon registering and logging in users will get a token which will be saved in the local storage of the browser.
 The token will be active for 12 hours, after which user will have to log out and back in to get a new functional token.
 
-Tokens are needed if the user want to compete in the leaderboard. Saving your score to the database requires a valid
+Tokens are needed if the user wants to compete in the leaderboard. Saving your score to the database requires a valid
 token. Without a token your score cannot be saved into the database. Token is checked when the user is logged in and
 wins a round of Hangman. The victory screen post-game shows was the score saved or not (depends on token validity).
 

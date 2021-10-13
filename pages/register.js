@@ -198,15 +198,15 @@ function UserInfo(props) {
         // Password: 1 lowercase, 1 uppercase, 1 number, 1 special, at least 8 characters
         const passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
 
-        if(!stringReg.test(user.username)) {
+        if(!stringReg.test(user.username) || user.username.length < 3 || user.username.length > 16) {
             isValid = false
             setError((prev) => ({ ...prev, username: true }))
         }
-        if(!stringReg.test(user.firstName)) {
+        if(!stringReg.test(user.firstName)  || user.firstName.length < 3 || user.firstName.length > 16) {
             isValid = false
             setError((prev) => ({ ...prev, firstName: true }))
         }
-        if(!stringReg.test(user.lastName)) {
+        if(!stringReg.test(user.lastName)  || user.lastName.length < 3 || user.lastName.length > 16) {
             isValid = false
             setError((prev) => ({ ...prev, lastName: true }))
         }

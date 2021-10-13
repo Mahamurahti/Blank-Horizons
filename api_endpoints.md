@@ -22,7 +22,7 @@ Example return when `statusCode = 200` (login successful):
 Accepts `POST` and `GET` requests. `POST` needs a username and score on the body as well as an Authorization header with
 an access token.
 
-Example return when `POST` and `statusCode = 201`:
+Example return when `POST` and `statusCode = 201` (score update successful):
 
 ```json
 {
@@ -83,7 +83,7 @@ Example return when `statusCode = 400` (username taken):
 
 Accepts `POST` and `GET` requests. `POST` needs a username and score on the body.
 
-Example return when `POST` and `statusCode = 201` (score update was successful):
+Example return when `POST` and `statusCode = 201` (registration was successful):
 
 ```json
 {
@@ -122,7 +122,7 @@ Example return when `GET` and `statusCode = 200`:
 
 ### Applies to all
 
-If something goes wrong, the endpoint always returns the following:
+If something goes wrong, the endpoint always returns the following with a `statusCode = 500`:
 
 ```json
 {

@@ -19,6 +19,7 @@ export default async (req, res) => {
                 res.statusCode = 201
                 res.json({ username })
             } catch (e) {
+                console.log(e)
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500
                 error.info = { message: 'An error occurred while connecting to the database' }
@@ -31,6 +32,7 @@ export default async (req, res) => {
                 res.statusCode = 200
                 res.json(resultList)
             } catch (e) {
+                console.log(e)
                 const error = new Error('An error occurred while connecting to the database')
                 error.status = 500
                 error.info = { message: 'An error occurred while connecting to the database' }
